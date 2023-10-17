@@ -27,6 +27,15 @@
 		0E4FF6232AC52A29009FC5F6 /* AuthenticationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E4FF6222AC52A29009FC5F6 /* AuthenticationView.swift */; };
 		0E4FF6252AC5A663009FC5F6 /* SignInEmailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E4FF6242AC5A663009FC5F6 /* SignInEmailView.swift */; };
 		0E4FF6292AC5A91A009FC5F6 /* AuthenticationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E4FF6282AC5A91A009FC5F6 /* AuthenticationManager.swift */; };
+		B713C1C02ADDF6420089F6D3 /* MessagingListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B713C1BF2ADDF6420089F6D3 /* MessagingListView.swift */; };
+		B713C1C22ADDF7F50089F6D3 /* MessagingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B713C1C12ADDF7F50089F6D3 /* MessagingViewModel.swift */; };
+		B713C1C42ADDF8240089F6D3 /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = B713C1C32ADDF8230089F6D3 /* Message.swift */; };
+		B713C1C62ADE0A760089F6D3 /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B713C1C52ADE0A760089F6D3 /* ProfileView.swift */; };
+		B74565A12ADC972000700718 /* MatchesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B74565A02ADC972000700718 /* MatchesViewModel.swift */; };
+		B74565A32ADC991200700718 /* MatchesListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B74565A22ADC991200700718 /* MatchesListView.swift */; };
+		B74565A52ADC994B00700718 /* Match.swift in Sources */ = {isa = PBXBuildFile; fileRef = B74565A42ADC994B00700718 /* Match.swift */; };
+		B74F34002AD72F4800751833 /* Filters.swift in Sources */ = {isa = PBXBuildFile; fileRef = B74F33FF2AD72F4800751833 /* Filters.swift */; };
+		B74F34022AD8512A00751833 /* SelectButtonFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = B74F34012AD8512A00751833 /* SelectButtonFilter.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -62,6 +71,15 @@
 		0E4FF6222AC52A29009FC5F6 /* AuthenticationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationView.swift; sourceTree = "<group>"; };
 		0E4FF6242AC5A663009FC5F6 /* SignInEmailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInEmailView.swift; sourceTree = "<group>"; };
 		0E4FF6282AC5A91A009FC5F6 /* AuthenticationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationManager.swift; sourceTree = "<group>"; };
+		B713C1BF2ADDF6420089F6D3 /* MessagingListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessagingListView.swift; sourceTree = "<group>"; };
+		B713C1C12ADDF7F50089F6D3 /* MessagingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessagingViewModel.swift; sourceTree = "<group>"; };
+		B713C1C32ADDF8230089F6D3 /* Message.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
+		B713C1C52ADE0A760089F6D3 /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
+		B74565A02ADC972000700718 /* MatchesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchesViewModel.swift; sourceTree = "<group>"; };
+		B74565A22ADC991200700718 /* MatchesListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchesListView.swift; sourceTree = "<group>"; };
+		B74565A42ADC994B00700718 /* Match.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Match.swift; sourceTree = "<group>"; };
+		B74F33FF2AD72F4800751833 /* Filters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Filters.swift; sourceTree = "<group>"; };
+		B74F34012AD8512A00751833 /* SelectButtonFilter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectButtonFilter.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -121,6 +139,8 @@
 		0E4FF5E02AC4D81F009FC5F6 /* SWEGroup12-Tennis */ = {
 			isa = PBXGroup;
 			children = (
+				B713C1BE2ADDF61F0089F6D3 /* Messaging */,
+				B74F33FE2AD72F2500751833 /* Matches_Filtering */,
 				0E4FF5E12AC4D81F009FC5F6 /* SWEGroup12_TennisApp.swift */,
 				0E4FF5E32AC4D81F009FC5F6 /* ContentView.swift */,
 				0E4FF6212AC52956009FC5F6 /* Authentication */,
@@ -165,6 +185,29 @@
 				0E4FF6282AC5A91A009FC5F6 /* AuthenticationManager.swift */,
 			);
 			path = Authentication;
+			sourceTree = "<group>";
+		};
+		B713C1BE2ADDF61F0089F6D3 /* Messaging */ = {
+			isa = PBXGroup;
+			children = (
+				B713C1BF2ADDF6420089F6D3 /* MessagingListView.swift */,
+				B713C1C12ADDF7F50089F6D3 /* MessagingViewModel.swift */,
+				B713C1C32ADDF8230089F6D3 /* Message.swift */,
+			);
+			path = Messaging;
+			sourceTree = "<group>";
+		};
+		B74F33FE2AD72F2500751833 /* Matches_Filtering */ = {
+			isa = PBXGroup;
+			children = (
+				B74F33FF2AD72F4800751833 /* Filters.swift */,
+				B74F34012AD8512A00751833 /* SelectButtonFilter.swift */,
+				B74565A02ADC972000700718 /* MatchesViewModel.swift */,
+				B74565A22ADC991200700718 /* MatchesListView.swift */,
+				B74565A42ADC994B00700718 /* Match.swift */,
+				B713C1C52ADE0A760089F6D3 /* ProfileView.swift */,
+			);
+			path = Matches_Filtering;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -314,9 +357,18 @@
 			files = (
 				0E4FF5E42AC4D81F009FC5F6 /* ContentView.swift in Sources */,
 				0E4FF5E22AC4D81F009FC5F6 /* SWEGroup12_TennisApp.swift in Sources */,
+				B74565A32ADC991200700718 /* MatchesListView.swift in Sources */,
 				0E4FF6232AC52A29009FC5F6 /* AuthenticationView.swift in Sources */,
+				B74F34002AD72F4800751833 /* Filters.swift in Sources */,
+				B713C1C22ADDF7F50089F6D3 /* MessagingViewModel.swift in Sources */,
+				B74565A12ADC972000700718 /* MatchesViewModel.swift in Sources */,
+				B74F34022AD8512A00751833 /* SelectButtonFilter.swift in Sources */,
+				B74565A52ADC994B00700718 /* Match.swift in Sources */,
+				B713C1C42ADDF8240089F6D3 /* Message.swift in Sources */,
 				0E4FF6292AC5A91A009FC5F6 /* AuthenticationManager.swift in Sources */,
 				0E4FF6252AC5A663009FC5F6 /* SignInEmailView.swift in Sources */,
+				B713C1C62ADE0A760089F6D3 /* ProfileView.swift in Sources */,
+				B713C1C02ADDF6420089F6D3 /* MessagingListView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -476,6 +528,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"SWEGroup12-Tennis/Preview Content\"";
+				DEVELOPMENT_TEAM = W26842FAXD;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
@@ -512,6 +565,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"SWEGroup12-Tennis/Preview Content\"";
+				DEVELOPMENT_TEAM = W26842FAXD;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
