@@ -24,9 +24,18 @@
 		0E4FF61C2AC51562009FC5F6 /* FirebaseDatabaseSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 0E4FF61B2AC51562009FC5F6 /* FirebaseDatabaseSwift */; };
 		0E4FF61E2AC51562009FC5F6 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 0E4FF61D2AC51562009FC5F6 /* FirebaseFirestore */; };
 		0E4FF6202AC51562009FC5F6 /* FirebaseFirestoreSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 0E4FF61F2AC51562009FC5F6 /* FirebaseFirestoreSwift */; };
-		0E4FF6232AC52A29009FC5F6 /* AuthenticationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E4FF6222AC52A29009FC5F6 /* AuthenticationView.swift */; };
-		0E4FF6252AC5A663009FC5F6 /* SignInEmailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E4FF6242AC5A663009FC5F6 /* SignInEmailView.swift */; };
-		0E4FF6292AC5A91A009FC5F6 /* AuthenticationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E4FF6282AC5A91A009FC5F6 /* AuthenticationManager.swift */; };
+		0E4FF62F2AC65513009FC5F6 /* SelectButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E4FF62E2AC65513009FC5F6 /* SelectButton.swift */; };
+		0E8036D02AD5C6B60026F865 /* InputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E8036CF2AD5C6B60026F865 /* InputView.swift */; };
+		0E8036D22AD5C6C30026F865 /* SettingsRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E8036D12AD5C6C30026F865 /* SettingsRowView.swift */; };
+		0E878CB32ADCCF6E00E183BD /* AuthManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E878CB22ADCCF6E00E183BD /* AuthManager.swift */; };
+		0E878CB52ADCD02900E183BD /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E878CB42ADCD02900E183BD /* SettingsView.swift */; };
+		0E878CB72ADCD03C00E183BD /* LogInView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E878CB62ADCD03C00E183BD /* LogInView.swift */; };
+		0E878CB92ADCD04A00E183BD /* ForgottenPasswordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E878CB82ADCD04A00E183BD /* ForgottenPasswordView.swift */; };
+		0E878CBB2ADCD05000E183BD /* SignUpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E878CBA2ADCD05000E183BD /* SignUpView.swift */; };
+		0E878CBD2ADCD05500E183BD /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E878CBC2ADCD05500E183BD /* ProfileView.swift */; };
+		0E878CBF2ADCD05A00E183BD /* CreateProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E878CBE2ADCD05A00E183BD /* CreateProfileView.swift */; };
+		0E878CC22ADD724200E183BD /* UserManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E878CC12ADD724200E183BD /* UserManager.swift */; };
+		0EBADA862AD43A3400A0F6FB /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = 0EBADA852AD43A3400A0F6FB /* FirebaseStorage */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -59,9 +68,17 @@
 		0E4FF5FD2AC4D821009FC5F6 /* SWEGroup12_TennisUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SWEGroup12_TennisUITests.swift; sourceTree = "<group>"; };
 		0E4FF5FF2AC4D821009FC5F6 /* SWEGroup12_TennisUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SWEGroup12_TennisUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		0E4FF60C2AC50E75009FC5F6 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
-		0E4FF6222AC52A29009FC5F6 /* AuthenticationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationView.swift; sourceTree = "<group>"; };
-		0E4FF6242AC5A663009FC5F6 /* SignInEmailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInEmailView.swift; sourceTree = "<group>"; };
-		0E4FF6282AC5A91A009FC5F6 /* AuthenticationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationManager.swift; sourceTree = "<group>"; };
+		0E4FF62E2AC65513009FC5F6 /* SelectButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectButton.swift; sourceTree = "<group>"; };
+		0E8036CF2AD5C6B60026F865 /* InputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputView.swift; sourceTree = "<group>"; };
+		0E8036D12AD5C6C30026F865 /* SettingsRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsRowView.swift; sourceTree = "<group>"; };
+		0E878CB22ADCCF6E00E183BD /* AuthManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthManager.swift; sourceTree = "<group>"; };
+		0E878CB42ADCD02900E183BD /* SettingsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		0E878CB62ADCD03C00E183BD /* LogInView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogInView.swift; sourceTree = "<group>"; };
+		0E878CB82ADCD04A00E183BD /* ForgottenPasswordView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ForgottenPasswordView.swift; sourceTree = "<group>"; };
+		0E878CBA2ADCD05000E183BD /* SignUpView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignUpView.swift; sourceTree = "<group>"; };
+		0E878CBC2ADCD05500E183BD /* ProfileView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
+		0E878CBE2ADCD05A00E183BD /* CreateProfileView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateProfileView.swift; sourceTree = "<group>"; };
+		0E878CC12ADD724200E183BD /* UserManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -72,6 +89,7 @@
 				0E4FF61C2AC51562009FC5F6 /* FirebaseDatabaseSwift in Frameworks */,
 				0E4FF61A2AC51562009FC5F6 /* FirebaseDatabase in Frameworks */,
 				0E4FF6162AC50F92009FC5F6 /* FirebaseAppCheck in Frameworks */,
+				0EBADA862AD43A3400A0F6FB /* FirebaseStorage in Frameworks */,
 				0E4FF6182AC51562009FC5F6 /* FirebaseAuth in Frameworks */,
 				0E4FF6142AC50F92009FC5F6 /* FirebaseAnalyticsSwift in Frameworks */,
 				0E4FF61E2AC51562009FC5F6 /* FirebaseFirestore in Frameworks */,
@@ -121,9 +139,10 @@
 		0E4FF5E02AC4D81F009FC5F6 /* SWEGroup12-Tennis */ = {
 			isa = PBXGroup;
 			children = (
-				0E4FF5E12AC4D81F009FC5F6 /* SWEGroup12_TennisApp.swift */,
-				0E4FF5E32AC4D81F009FC5F6 /* ContentView.swift */,
-				0E4FF6212AC52956009FC5F6 /* Authentication */,
+				0E8036CB2AD5C5F50026F865 /* App */,
+				0E8036CC2AD5C5FC0026F865 /* Components */,
+				0E878CC02ADD71E900E183BD /* Managers */,
+				0E8036CD2AD5C6040026F865 /* Core */,
 				0E4FF5E52AC4D821009FC5F6 /* Assets.xcassets */,
 				0E4FF5E72AC4D821009FC5F6 /* SWEGroup12_Tennis.entitlements */,
 				0E4FF60C2AC50E75009FC5F6 /* GoogleService-Info.plist */,
@@ -160,11 +179,82 @@
 		0E4FF6212AC52956009FC5F6 /* Authentication */ = {
 			isa = PBXGroup;
 			children = (
-				0E4FF6222AC52A29009FC5F6 /* AuthenticationView.swift */,
-				0E4FF6242AC5A663009FC5F6 /* SignInEmailView.swift */,
-				0E4FF6282AC5A91A009FC5F6 /* AuthenticationManager.swift */,
+				0E8036DD2AD5CF650026F865 /* View */,
+				0E8036DC2AD5CF5E0026F865 /* ViewModel */,
 			);
 			path = Authentication;
+			sourceTree = "<group>";
+		};
+		0E758EEF2ACF112900737913 /* Profile */ = {
+			isa = PBXGroup;
+			children = (
+				0E878CBC2ADCD05500E183BD /* ProfileView.swift */,
+				0E878CBE2ADCD05A00E183BD /* CreateProfileView.swift */,
+			);
+			path = Profile;
+			sourceTree = "<group>";
+		};
+		0E8036CB2AD5C5F50026F865 /* App */ = {
+			isa = PBXGroup;
+			children = (
+				0E4FF5E12AC4D81F009FC5F6 /* SWEGroup12_TennisApp.swift */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		0E8036CC2AD5C5FC0026F865 /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				0E8036CF2AD5C6B60026F865 /* InputView.swift */,
+				0E8036D12AD5C6C30026F865 /* SettingsRowView.swift */,
+				0E4FF62E2AC65513009FC5F6 /* SelectButton.swift */,
+			);
+			path = Components;
+			sourceTree = "<group>";
+		};
+		0E8036CD2AD5C6040026F865 /* Core */ = {
+			isa = PBXGroup;
+			children = (
+				0E4FF6212AC52956009FC5F6 /* Authentication */,
+				0E758EEF2ACF112900737913 /* Profile */,
+				0E8036D52AD5CD260026F865 /* Root */,
+			);
+			path = Core;
+			sourceTree = "<group>";
+		};
+		0E8036D52AD5CD260026F865 /* Root */ = {
+			isa = PBXGroup;
+			children = (
+				0E4FF5E32AC4D81F009FC5F6 /* ContentView.swift */,
+			);
+			path = Root;
+			sourceTree = "<group>";
+		};
+		0E8036DC2AD5CF5E0026F865 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		0E8036DD2AD5CF650026F865 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				0E878CB62ADCD03C00E183BD /* LogInView.swift */,
+				0E878CBA2ADCD05000E183BD /* SignUpView.swift */,
+				0E878CB42ADCD02900E183BD /* SettingsView.swift */,
+				0E878CB82ADCD04A00E183BD /* ForgottenPasswordView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		0E878CC02ADD71E900E183BD /* Managers */ = {
+			isa = PBXGroup;
+			children = (
+				0E878CB22ADCCF6E00E183BD /* AuthManager.swift */,
+				0E878CC12ADD724200E183BD /* UserManager.swift */,
+			);
+			path = Managers;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -193,6 +283,7 @@
 				0E4FF61B2AC51562009FC5F6 /* FirebaseDatabaseSwift */,
 				0E4FF61D2AC51562009FC5F6 /* FirebaseFirestore */,
 				0E4FF61F2AC51562009FC5F6 /* FirebaseFirestoreSwift */,
+				0EBADA852AD43A3400A0F6FB /* FirebaseStorage */,
 			);
 			productName = "SWEGroup12-Tennis";
 			productReference = 0E4FF5DE2AC4D81F009FC5F6 /* SWEGroup12-Tennis.app */;
@@ -312,11 +403,19 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0E878CB92ADCD04A00E183BD /* ForgottenPasswordView.swift in Sources */,
+				0E878CB52ADCD02900E183BD /* SettingsView.swift in Sources */,
+				0E8036D02AD5C6B60026F865 /* InputView.swift in Sources */,
+				0E878CC22ADD724200E183BD /* UserManager.swift in Sources */,
+				0E878CB32ADCCF6E00E183BD /* AuthManager.swift in Sources */,
+				0E4FF62F2AC65513009FC5F6 /* SelectButton.swift in Sources */,
 				0E4FF5E42AC4D81F009FC5F6 /* ContentView.swift in Sources */,
+				0E878CBF2ADCD05A00E183BD /* CreateProfileView.swift in Sources */,
+				0E878CBB2ADCD05000E183BD /* SignUpView.swift in Sources */,
+				0E8036D22AD5C6C30026F865 /* SettingsRowView.swift in Sources */,
+				0E878CB72ADCD03C00E183BD /* LogInView.swift in Sources */,
+				0E878CBD2ADCD05500E183BD /* ProfileView.swift in Sources */,
 				0E4FF5E22AC4D81F009FC5F6 /* SWEGroup12_TennisApp.swift in Sources */,
-				0E4FF6232AC52A29009FC5F6 /* AuthenticationView.swift in Sources */,
-				0E4FF6292AC5A91A009FC5F6 /* AuthenticationManager.swift in Sources */,
-				0E4FF6252AC5A663009FC5F6 /* SignInEmailView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -722,6 +821,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 0E4FF60E2AC50F92009FC5F6 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseFirestoreSwift;
+		};
+		0EBADA852AD43A3400A0F6FB /* FirebaseStorage */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 0E4FF60E2AC50F92009FC5F6 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseStorage;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
