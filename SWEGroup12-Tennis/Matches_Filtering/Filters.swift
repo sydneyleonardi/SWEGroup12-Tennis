@@ -10,6 +10,8 @@
 import SwiftUI
 
 struct FilterView: View{
+    @Binding var showSignIn: Bool
+    //state variables for filter settings
     @State var isSelected: Bool = false
     @State var isSelected1: Bool = false
     @State var isSelected2: Bool = false
@@ -34,7 +36,8 @@ struct FilterView: View{
     @State var isSelected53: Bool = false
     
     var numberArray = [5, 10, 15, 20, 25]
-    //var gender: String = "female"
+    
+    //fake match with specific fields set for filtering
     @State var sendFilter = Match(name:"", skillLevel:"", email:"", gender:"", type:"")
     //@State var color: Color
     //@State var text: String
@@ -44,38 +47,41 @@ struct FilterView: View{
         NavigationView{
             
             ZStack {
-                /*var sendFilter = Match(name:"", skillLevel:"", email:"", gender:gender, type:"")*/
-                NavigationLink("Apply Filter",destination: MatchesListView(sendFilter:sendFilter))
+                //nav link to apply filter and send to match list view
+                NavigationLink("Apply Filter",destination: MatchesListView(sendFilter:sendFilter, showSignIn: $showSignIn))
                     .frame(width:150, height:40)
                     .foregroundColor(.black)
-                    .background(CustomColor.myColor)
+                    .background(Color.accentColor)
                     .cornerRadius(15)
                     .offset(y:220)
                 VStack(spacing:18){
-                    SelectButtonFilter(isSelected: $isSelected , color: CustomColor.myColor)
+                    //select button filter which toggles on and off with tap gesture
+                    //same logic applied to all buttons
+                    //goal is to better organize these in an array
+                    SelectButtonFilter(isSelected: $isSelected , color: Color.accentColor)
                         .offset(x:-50, y:-190)
                         .onTapGesture{
                             isSelected.toggle()
                         }
                     
-                    SelectButtonFilter(isSelected: $isSelected1 , color: CustomColor.myColor)
+                    SelectButtonFilter(isSelected: $isSelected1 , color: Color.accentColor)
                         .offset(x:-50, y:-190)
                         .onTapGesture{
                             isSelected1.toggle()
                         }
                     
-                    SelectButtonFilter(isSelected: $isSelected2 , color: CustomColor.myColor)
+                    SelectButtonFilter(isSelected: $isSelected2 , color: Color.accentColor)
                         .offset(x:-50, y:-190)
                         .onTapGesture{
                             isSelected2.toggle()
                         }
-                    SelectButtonFilter(isSelected: $isSelected3 , color: CustomColor.myColor)
+                    SelectButtonFilter(isSelected: $isSelected3 , color: Color.accentColor)
                         .offset(x:-50, y:-190)
                         .onTapGesture{
                             isSelected3.toggle()
                         }
                     
-                    SelectButtonFilter(isSelected: $isSelected4 , color: CustomColor.myColor)
+                    SelectButtonFilter(isSelected: $isSelected4 , color: Color.accentColor)
                         .offset(x:-50, y:-190)
                         .onTapGesture{
                             isSelected4.toggle()
@@ -83,30 +89,30 @@ struct FilterView: View{
                     
                 }
                 VStack(spacing:18){
-                    SelectButtonFilter(isSelected: $isSelected20 , color: CustomColor.myColor)
+                    SelectButtonFilter(isSelected: $isSelected20 , color: Color.accentColor)
                         .offset(x:37, y:-190)
                         .onTapGesture{
                             isSelected20.toggle()
                         }
                     
-                    SelectButtonFilter(isSelected: $isSelected21 , color: CustomColor.myColor)
+                    SelectButtonFilter(isSelected: $isSelected21 , color: Color.accentColor)
                         .offset(x:37, y:-190)
                         .onTapGesture{
                             isSelected21.toggle()
                         }
                     
-                    SelectButtonFilter(isSelected: $isSelected22 , color: CustomColor.myColor)
+                    SelectButtonFilter(isSelected: $isSelected22 , color: Color.accentColor)
                         .offset(x:37, y:-190)
                         .onTapGesture{
                             isSelected22.toggle()
                         }
-                    SelectButtonFilter(isSelected: $isSelected23 , color: CustomColor.myColor)
+                    SelectButtonFilter(isSelected: $isSelected23 , color: Color.accentColor)
                         .offset(x:37, y:-190)
                         .onTapGesture{
                             isSelected23.toggle()
                         }
                     
-                    SelectButtonFilter(isSelected: $isSelected24 , color: CustomColor.myColor)
+                    SelectButtonFilter(isSelected: $isSelected24 , color: Color.accentColor)
                         .offset(x:37, y:-190)
                         .onTapGesture{
                             isSelected24.toggle()
@@ -114,30 +120,30 @@ struct FilterView: View{
                     
                 }
                 VStack(spacing:18){
-                    SelectButtonFilter(isSelected: $isSelected30 , color: CustomColor.myColor)
+                    SelectButtonFilter(isSelected: $isSelected30 , color: Color.accentColor)
                         .offset(x:128, y:-190)
                         .onTapGesture{
                             isSelected30.toggle()
                         }
                     
-                    SelectButtonFilter(isSelected: $isSelected31 , color: CustomColor.myColor)
+                    SelectButtonFilter(isSelected: $isSelected31 , color: Color.accentColor)
                         .offset(x:128, y:-190)
                         .onTapGesture{
                             isSelected31.toggle()
                         }
                     
-                    SelectButtonFilter(isSelected: $isSelected32 , color: CustomColor.myColor)
+                    SelectButtonFilter(isSelected: $isSelected32 , color: Color.accentColor)
                         .offset(x:128, y:-190)
                         .onTapGesture{
                             isSelected32.toggle()
                         }
-                    SelectButtonFilter(isSelected: $isSelected33 , color: CustomColor.myColor)
+                    SelectButtonFilter(isSelected: $isSelected33 , color: Color.accentColor)
                         .offset(x:128, y:-190)
                         .onTapGesture{
                             isSelected33.toggle()
                         }
                     
-                    SelectButtonFilter(isSelected: $isSelected34 , color: CustomColor.myColor)
+                    SelectButtonFilter(isSelected: $isSelected34 , color: Color.accentColor)
                         .offset(x:128, y:-190)
                         .onTapGesture{
                             isSelected34.toggle()
@@ -197,14 +203,14 @@ struct FilterView: View{
                         }
                     }
                     HStack(spacing: 150){
-                        SelectButtonFilter(isSelected: $isSelectedMale , color: CustomColor.myColor)
+                        SelectButtonFilter(isSelected: $isSelectedMale , color: Color.accentColor)
                             .offset(x:20, y:-105)
                             .onTapGesture{
                                 isSelectedMale.toggle()
                                 sendFilter.gender = "Male"
                                 isSelectedFemale = false
                             }
-                        SelectButtonFilter(isSelected: $isSelectedFemale , color: CustomColor.myColor)
+                        SelectButtonFilter(isSelected: $isSelectedFemale , color: Color.accentColor)
                             .offset(x:20, y:-105)
                             .onTapGesture{
                                 isSelectedFemale.toggle()
@@ -231,14 +237,14 @@ struct FilterView: View{
                         }
                     }
                     HStack(spacing: 150){
-                        SelectButtonFilter(isSelected: $isSelectedSingles , color: CustomColor.myColor)
+                        SelectButtonFilter(isSelected: $isSelectedSingles , color: Color.accentColor)
                             .offset(x:20, y:-13)
                             .onTapGesture{
                                 isSelectedSingles.toggle()
                                 sendFilter.type = "Singles"
                                 isSelectedDoubles = false
                             }
-                        SelectButtonFilter(isSelected: $isSelectedDoubles , color: CustomColor.myColor)
+                        SelectButtonFilter(isSelected: $isSelectedDoubles , color: Color.accentColor)
                             .offset(x:20, y:-13)
                             .onTapGesture{
                                 isSelectedDoubles.toggle()
@@ -265,35 +271,24 @@ struct FilterView: View{
                         }
                     }
                     HStack(spacing: 100){
-                        SelectButtonFilter(isSelected: $isSelected51 , color: CustomColor.myColor)
+                        SelectButtonFilter(isSelected: $isSelected51 , color: Color.accentColor)
                             .offset(x:60, y:80)
                             .onTapGesture{
                                 isSelected51.toggle()
                             }
-                        SelectButtonFilter(isSelected: $isSelected52 , color: CustomColor.myColor)
+                        SelectButtonFilter(isSelected: $isSelected52 , color: Color.accentColor)
                             .offset(x:33, y:80)
                             .onTapGesture{
                                 isSelected52.toggle()
                             }
-                        SelectButtonFilter(isSelected: $isSelected53 , color: CustomColor.myColor)
+                        SelectButtonFilter(isSelected: $isSelected53 , color: Color.accentColor)
                             .offset(x:30, y:80)
                             .onTapGesture{
                                 isSelected53.toggle()
                             }
                     }
-                    /*NavigationLink("Apply Filter",destination: MatchesListView())
-                     .offset(y:200)*/
                     
                 }
-                /*Capsule()
-                 .foregroundColor(CustomColor.myColor)
-                 .offset(y:230)
-                 .frame(width:140, height:50)
-                 NavigationLink(destination: MatchesListView())
-                 Text("Apply Filter")
-                 .offset(y:230)
-                 .font(.system(size:20))*/
-                
             }
         }
         
@@ -302,12 +297,5 @@ struct FilterView: View{
     
     
 #Preview {
-    FilterView()
+    FilterView(showSignIn: .constant(false))
 }
-  /*  struct ContentView_Previews: PreviewProvider {
-        static var previews: some View {
-            FilterView(isSelected2: .constant(false), color: CustomColor.myColor
-                       , text:"Option")
-        }
-    }*/
-

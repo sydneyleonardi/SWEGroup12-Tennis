@@ -1,14 +1,13 @@
 //
-//  SelectButtonFilter.swift
+//  SelectButton.swift
 //  SWEGroup12-Tennis
 //
-//  Created by Kathleen Katchis on 10/12/23.
+//  Created by Sydney Leonardi on 9/28/23.
 //
 
 import SwiftUI
 
-//syntax for all of the select buttons on the filter page
-struct SelectButtonFilter: View {
+struct SelectButton: View {
     @Binding var isSelected:Bool
     @State var color: Color
     
@@ -20,12 +19,11 @@ struct SelectButtonFilter: View {
                     .foregroundColor(isSelected ? color: .gray)
         }
     }
-        //}
     }
 
 
 #Preview {
     NavigationStack{
-        SelectButtonFilter(isSelected:.constant(false) ,color: CustomColor.myColor)
+        SelectButton(isSelected:.constant(false) ,color: CustomColor.myColor)
     }
 }

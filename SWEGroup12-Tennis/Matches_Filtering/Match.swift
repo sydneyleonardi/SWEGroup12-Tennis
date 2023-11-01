@@ -6,7 +6,8 @@
 //
 
 import Foundation
-
+//structure to hold match personal data
+//need to add more for timing preferences
 struct Match: Identifiable {
     var id: String = UUID().uuidString
     var name: String

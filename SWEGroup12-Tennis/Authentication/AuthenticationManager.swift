@@ -4,7 +4,7 @@
 //
 //  Created by Sydney Leonardi on 9/28/23.
 //
-
+/*
 import Foundation
 import FirebaseAuth
 
@@ -37,3 +37,4 @@ final class AuthenticationManager {
     }
     
 }
+*/

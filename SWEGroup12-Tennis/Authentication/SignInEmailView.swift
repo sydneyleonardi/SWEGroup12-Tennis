@@ -4,7 +4,7 @@
 //
 //  Created by Sydney Leonardi on 9/28/23.
 //
-
+/*
 import SwiftUI
 
 final class SignInEmailViewModel: ObservableObject{
@@ -80,3 +80,4 @@ struct SignInEmailView: View {
         SignInEmailView()
     }
 }
+*/
