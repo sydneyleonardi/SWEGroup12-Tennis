@@ -10,33 +10,20 @@
 
 import SwiftUI
 
-@MainActor
-final class ForgottenPasswordViewModel: ObservableObject{
-    @Published var email = ""
-    @Published var alert = false
-    
-    // throw an error if the email line is empty
-    func resetPassword() async throws {
-        
-        try await AuthManager.shared.resetPassword(email: email)
-        
-    }
-}
-
-
 struct ForgottenPasswordView: View {
     @StateObject private var viewModel = ForgottenPasswordViewModel()
-    @Binding var showSignIn: Bool
     @Environment(\.dismiss) var dismiss
+    @State private var showSignIn = false
     
     var body: some View {
         VStack(spacing: 10){
             
             Text("Forgot Your Password?")
-                .font(.largeTitle)
+                .font(.headline)
                 .padding(30)
             
             InputView(text: $viewModel.email, title: "Vanderbilt Email")
+                .padding(.bottom, 20)
             
             Button{
                 Task{
@@ -52,6 +39,12 @@ struct ForgottenPasswordView: View {
                 Text("Reset Password")
             }
             .padding(30)
+            .frame(width:300, height:50)
+            .background(CustomColor.myColor)
+            .cornerRadius(10)
+            .foregroundColor(.black)
+            .disabled(!formIsValid)
+            .opacity(formIsValid ? 1.0:0.5)
             .alert(isPresented: $viewModel.alert) {
                 Alert(title: Text("Reset Sent"),
                       message: Text("An email has been sent to  \(viewModel.email) to reset your password"),
@@ -61,12 +54,20 @@ struct ForgottenPasswordView: View {
                 })
             }
             
+            NavigationLink("", destination: LogInView(), isActive: $showSignIn)
+            
             Spacer()
             
         }
     }
 }
 
+extension ForgottenPasswordView: AuthenticationFormProtocol{
+    var formIsValid: Bool {
+        return !viewModel.email.isEmpty
+    }
+}
+
 #Preview {
-    ForgottenPasswordView(showSignIn: .constant(false))
+    ForgottenPasswordView()
 }

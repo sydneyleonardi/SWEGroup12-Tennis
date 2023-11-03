@@ -21,15 +21,14 @@ class AppDelegate: NSObject, UIApplicationDelegate {
 
 @main
 struct SWEGroup12_TennisApp: App {
+    
   // register app delegate for Firebase setup
   @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
 
 
   var body: some Scene {
     WindowGroup {
-      NavigationStack {
         ContentView()
-      }
     }
   }
 }

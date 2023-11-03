@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+// Creates a Customizable Input Box for any TextField 
 struct InputView: View {
     
     @Binding var text: String

@@ -10,23 +10,15 @@
 
 import SwiftUI
 
-
-@MainActor
-final class LogInEmailViewModel: ObservableObject{
-    @Published var email = ""
-    @Published var password = ""
-    @Published var errorAlert = false
-    
-    func signIn() async throws {
-        
-        try await AuthManager.shared.signInUser(email: email, password: password)
-        }
-}
-
 struct LogInView: View {
     @StateObject private var viewModel = LogInEmailViewModel()
-    @Binding var showSignIn: Bool
-    @Binding var showCreateUser: Bool
+    
+    // error messages
+    @State private var errorAlert = false
+    @State private var errorMessage = ""
+    
+    // navigation variable
+    @State private var showProfile = false
     
     var body: some View {
         NavigationStack{
@@ -53,7 +45,7 @@ struct LogInView: View {
                 
                 // Forgot your Password
                 NavigationLink{
-                    ForgottenPasswordView(showSignIn: $showSignIn)
+                    ForgottenPasswordView()
                 }label:{
                     Text("Forgot your password?")
                 }
@@ -65,10 +57,9 @@ struct LogInView: View {
                     Task{
                         do{
                             try await viewModel.signIn()
-                            showSignIn = false
-                            return
+                            showProfile = true
                         }catch{
-                            viewModel.errorAlert = true
+                            errorAlert = true
                         }
                     }
                 } label: {
@@ -81,22 +72,23 @@ struct LogInView: View {
                 .cornerRadius(10)
                 .disabled(!formIsValid)
                 .opacity(formIsValid ? 1.0: 0.5)
-                .alert(isPresented: $viewModel.errorAlert) {
+                .alert(isPresented: $errorAlert) {
                     Alert(title: Text("Invalid Login"),
                           message: Text("Email and/or password are invalid"),
                           dismissButton: .default(Text("OK")) {
-                        viewModel.errorAlert = false
+                        errorAlert = false
                         viewModel.email = ""
                         viewModel.password = ""
                     })
                 }
-
+                
+                // Navigates to Profile View after Log In
+                NavigationLink("", destination: HomeView().navigationBarBackButtonHidden(true), isActive: $showProfile)
 
                 
-                
-                // Sign Up Instead 
+                // Navigates to Sign Up 
                 NavigationLink{
-                    SignUpView(showSignIn: $showSignIn, showCreateUser: $showCreateUser)
+                    SignUpView()
                         .navigationBarBackButtonHidden(true)
                 }label:{
                     HStack(spacing: 5){
@@ -113,6 +105,8 @@ struct LogInView: View {
     }
 }
 
+
+// Validation for Log In
 extension LogInView: AuthenticationFormProtocol{
     var formIsValid: Bool {
         return !viewModel.email.isEmpty
@@ -123,5 +117,5 @@ extension LogInView: AuthenticationFormProtocol{
 }
 
 #Preview {
-    LogInView(showSignIn: .constant(false), showCreateUser: .constant(false))
+    LogInView()
 }

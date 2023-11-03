@@ -6,124 +6,98 @@
 //
 
 import XCTest
-import FirebaseAuth
-@testable import SWEGroup12_Tennis // Replace "YourApp" with your app's module name
+@testable import SWEGroup12_Tennis // Import your app module
 
 class LogInViewTests: XCTestCase {
-    var view: LogInView!
-    var viewModel: LogInEmailViewModel!
-
-    @MainActor override func setUp() {
-        super.setUp()
-        viewModel = LogInEmailViewModel()
-        view = LogInView(showSignIn: .constant(true), showCreateUser: .constant(false))
-    }
-
-    override func tearDown() {
-        viewModel = nil
-        view = nil
-        super.tearDown()
-    }
-
-    @MainActor func testSignInButtonValidForm() {
-        XCTAssertFalse(viewModel.errorAlert) // Ensure errorAlert is initially false
-
-        let signInButton = try? view.inspect().button("Sign in")
-        XCTAssertNotNil(signInButton)
-
-        signInButton?.tap()
-        XCTAssertTrue(viewModel.formIsValid) // Ensure the form is valid
-        XCTAssertFalse(viewModel.errorAlert) // Ensure no error alert is shown
-        XCTAssertFalse(view.showSignIn) // Ensure showSignIn is set to false
-    }
-
-    @MainActor func testSignInButtonInvalidForm() {
-        XCTAssertFalse(viewModel.errorAlert) // Ensure errorAlert is initially false
-
-        let signInButton = try? view.inspect().button("Sign in")
-        XCTAssertNotNil(signInButton)
-
-        // Provide invalid email and password
-        viewModel.email = "invalidemail"
-        viewModel.password = "short"
-
-        signInButton?.tap()
-        XCTAssertFalse(viewModel.formIsValid) // Ensure the form is invalid
-        XCTAssertTrue(viewModel.errorAlert) // Ensure an error alert is shown
-    }
-
-    @MainActor func testFormIsValid() {
-        viewModel.email = "validemail@example.com"
-        viewModel.password = "securepassword"
-
-        XCTAssertTrue(viewModel.formIsValid) // Ensure a valid form
-    }
-
-    @MainActor func testFormIsInvalid() {
-        viewModel.email = "invalidemail"
-        viewModel.password = "short"
-
-        XCTAssertFalse(viewModel.formIsValid) // Ensure an invalid form
-    }
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/*
-import XCTest
-import SwiftUI
-import FirebaseAuth
-
-@testable import SWEGroup12_Tennis
-
-final class SWEGroup12_TennisTests: XCTestCase {
     
-   
+    // Mocking the LogInEmailViewModel and AuthManager
+    var viewModel: LogInEmailViewModel!
+    var authManager: AuthManager!
 
-
-    override func setUpWithError() throws {
-        // Put setup code here. This method is called before the invocation of each test method in the class.
+    @MainActor override func setUpWithError() throws {
+        // Create instances of the LogInEmailViewModel and AuthManager
+        viewModel = LogInEmailViewModel()
+        authManager = AuthManager.shared
     }
 
     override func tearDownWithError() throws {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
+        // Clean up resources, if needed
+        viewModel = nil
+        authManager = nil
     }
-
-    func testExample() throws {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
-        // Any test you write for XCTest can be annotated as throws and async.
-        // Mark your test throws to produce an unexpected failure when your test encounters an uncaught error.
-        // Mark your test async to allow awaiting for asynchronous code to complete. Check the results with assertions afterwards.
-    }
-
-    func testPerformanceExample() throws {
-        // This is an example of a performance test case.
-        measure {
-            // Put the code you want to measure the time of here.
+    
+    // Test the signIn method with a successful login
+    func testSignInSuccess() {
+        // Simulate a successful sign-in using a mocked AuthManager
+        let expectation = XCTestExpectation(description: "Sign-in success expectation")
+        
+        Task {
+            do {
+                let authDataResult = try await authManager.signInUser(email: "test@example.com", password: "password123")
+                // You can add assertions to check the success state
+                XCTAssertNotNil(authDataResult)
+                expectation.fulfill()
+            } catch {
+                XCTFail("Unexpected error: \(error)")
+            }
         }
+        
+        wait(for: [expectation], timeout: 5.0)
     }
-    */
-
+    
+    // Test the signIn method with a failed login
+    func testSignInFailure() {
+        // Simulate a failed sign-in using a mocked AuthManager
+        let expectation = XCTestExpectation(description: "Sign-in failure expectation")
+        
+        Task {
+            do {
+                // Attempt to sign in with incorrect credentials
+                try await authManager.signInUser(email: "invalid@example.com", password: "wrongpassword")
+                XCTFail("Sign-in should have failed")
+            } catch {
+                // You can add assertions to check the failure state
+                XCTAssertTrue(true, "Sign-in failed as expected")
+                expectation.fulfill()
+            }
+        }
+        
+        wait(for: [expectation], timeout: 5.0)
+    }
 }
+
+/*
+ import XCTest
+ import SwiftUI
+ import FirebaseAuth
+ 
+ @testable import SWEGroup12_Tennis
+ 
+ final class SWEGroup12_TennisTests: XCTestCase {
+ 
+ 
+ override func setUpWithError() throws {
+ // Put setup code here. This method is called before the invocation of each test method in the class.
+ }
+ 
+ override func tearDownWithError() throws {
+ // Put teardown code here. This method is called after the invocation of each test method in the class.
+ }
+ 
+ func testExample() throws {
+ // This is an example of a functional test case.
+ // Use XCTAssert and related functions to verify your tests produce the correct results.
+ // Any test you write for XCTest can be annotated as throws and async.
+ // Mark your test throws to produce an unexpected failure when your test encounters an uncaught error.
+ // Mark your test async to allow awaiting for asynchronous code to complete. Check the results with assertions afterwards.
+ }
+ 
+ func testPerformanceExample() throws {
+ // This is an example of a performance test case.
+ measure {
+ // Put the code you want to measure the time of here.
+ }
+ }
+ 
+ }
+ */

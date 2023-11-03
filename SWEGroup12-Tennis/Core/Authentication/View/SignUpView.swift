@@ -5,32 +5,16 @@
 //  Created by Sydney Leonardi on 10/15/23.
 //
 
-// TO DO
-// Add in error + authentication protocol + alerts 
 
 import SwiftUI
 import FirebaseAuth
 
-@MainActor
-final class SignUpEmailViewModel: ObservableObject{
-    @Published var email = ""
-    @Published var password = ""
-    @Published var confirmPassword = ""
-    
-    func signUp()async throws {
-        
-        let AuthDataResult = try await AuthManager.shared.createUser(email: email, password: password)
-        try await UserManager.shared.createNewUser(auth: AuthDataResult)
-    }
-    
-}
-
 struct SignUpView: View {
     
     @StateObject private var viewModel = SignUpEmailViewModel()
-    @Binding var showSignIn: Bool
-    @Binding var showCreateUser: Bool
-    @Environment(\.dismiss) var dismiss
+    @State private var createUser = false
+    
+    // error variables
     @State private var errorAlert = false
     @State private var errorMessage = ""
     
@@ -50,13 +34,18 @@ struct SignUpView: View {
             
             // Form Fields
             VStack(spacing:15){
+                
+                // Email Input
                 InputView(text: $viewModel.email, title: "Vanderbilt Email")
                 
-                
+                // Password Input
                 InputView(text: $viewModel.password, title: "Password", isSecureField: true)
                 
+                // Confirm Password Input
                 ZStack(alignment: .trailing){
                     InputView(text: $viewModel.confirmPassword, title: "Confirm Password", isSecureField: true)
+                    
+                    // Icon to show user if passwords match
                     if !viewModel.password.isEmpty && !viewModel.confirmPassword.isEmpty
                     {
                         if viewModel.password == viewModel.confirmPassword{
@@ -76,14 +65,13 @@ struct SignUpView: View {
                 }
             }
             
+            
             // Sign Up Button
             Button {
                 Task{
                     do{
                         try await viewModel.signUp()
-                        showSignIn = false
-                        showCreateUser = true
-                        return
+                        createUser = true
                     }catch AuthErrorCode.emailAlreadyInUse{
                         errorAlert = true
                         errorMessage = " \(viewModel.email) is already in use!"
@@ -118,10 +106,14 @@ struct SignUpView: View {
                 })
             }
             
+            // Navigates to Create Profile Page
+            NavigationLink("", destination: CreateProfileView().navigationBarBackButtonHidden(true), isActive: $createUser)
             
-            // Sign In Page
-            Button{
-                dismiss()
+            
+            // Navigates to Log In Page
+            NavigationLink{
+                LogInView()
+                    .navigationBarBackButtonHidden(true)
             }label:{
                 HStack(spacing: 5){
                     Text("Already have an account?")
@@ -139,11 +131,11 @@ struct SignUpView: View {
         
 }
 
-// Validation
+// Validation for Sign Up
 extension SignUpView: AuthenticationFormProtocol{
     var formIsValid: Bool {
         return !viewModel.email.isEmpty
-        && viewModel.email.contains("@")
+        && viewModel.email.contains("@vanderbilt.edu")
         && !viewModel.password.isEmpty
         && viewModel.password.count > 8
         && viewModel.password == viewModel.confirmPassword
@@ -152,5 +144,5 @@ extension SignUpView: AuthenticationFormProtocol{
 
 
 #Preview {
-    SignUpView(showSignIn: .constant(false), showCreateUser: .constant(false))
+    SignUpView()
 }

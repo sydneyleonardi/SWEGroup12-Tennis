@@ -8,6 +8,7 @@
 import Foundation
 import FirebaseAuth
 
+// User Credentials
 struct AuthDataResultModel {
     let uid: String
     let email: String?
@@ -18,10 +19,16 @@ struct AuthDataResultModel {
     }
 }
 
+// Custom Error when unable to fetch user from authentication
+enum UserFetchError: Error{
+    case noAuthenticatedUser
+}
+
 protocol AuthenticationFormProtocol{
     var formIsValid: Bool {get}
 }
 
+// Connects to the database and managers all authentication procedures in the app
 final class AuthManager {
     
     static let shared = AuthManager()
@@ -38,7 +45,7 @@ final class AuthManager {
     // read / grab a user from the database
     func fetchUser() throws ->AuthDataResultModel{
         guard let user = Auth.auth().currentUser else {
-            throw URLError(.badURL)
+            throw UserFetchError.noAuthenticatedUser
         }
         
         return AuthDataResultModel(user: user)
@@ -59,16 +66,15 @@ final class AuthManager {
     // delete a user's account from Authentication database 
     func deleteAccount() throws {
         guard let user = Auth.auth().currentUser else{
-            throw URLError(.badURL)
+            throw UserFetchError.noAuthenticatedUser
         }
         user.delete()
     }
     
     // update a user's password
-    // create custom errors
     func updatePassword(newPassword: String) async throws {
         guard let user = Auth.auth().currentUser else {
-            throw URLError(.badURL)
+            throw UserFetchError.noAuthenticatedUser
         }
         
         try await user.updatePassword(to: newPassword)

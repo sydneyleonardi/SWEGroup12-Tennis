@@ -7,14 +7,13 @@
 
 import SwiftUI
 
+// Creates a customizable row in settings
 struct SettingsRowView: View {
     let imageName: String
     let title: String
     let tintColor: Color
     
-    
     var body: some View {
-        // for custom images, add that functionality ourselves
         HStack{
             Image(systemName: imageName)
                 .imageScale(.small)
