@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import UIKit
 
 // Displays a User's Profile Information
 
@@ -37,6 +38,8 @@ final class ProfileViewModel: ObservableObject
     @Published var isSelected18 = false
     @Published var isSelected19 = false
     @Published var isSelected20 = false
+    
+    @Published var image: UIImage? = nil
     
     // Load the Current User from Database
     func loadCurrentUser() async throws {

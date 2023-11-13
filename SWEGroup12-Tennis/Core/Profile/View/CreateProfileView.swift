@@ -41,6 +41,10 @@ struct CreateProfileView: View {
     @State private var showProfile = false
     @State private var shouldShowImagePicker = false
     
+    // Dropdown Options
+    @State private var selectedOption = ""
+    let options = ["Male", "Female"]
+    
     // View Model
     @StateObject private var viewModel = CreateProfileViewModel()
 
@@ -75,7 +79,6 @@ struct CreateProfileView: View {
                                     .bold()
                                     .padding(.bottom, 5)
                                     .accentColor(.black)
-
                             }
                             
                         }
@@ -96,13 +99,21 @@ struct CreateProfileView: View {
                                 .cornerRadius(10)
                             
                             HStack{
-                                TextField("Gender", text: $viewModel.gender)
-                                    .autocorrectionDisabled(true)
-                                    .autocapitalization(.none)
-                                    .padding()
-                                    .frame(width:145, height:50)
-                                    .background(Color.black.opacity(0.05))
-                                    .cornerRadius(10)
+                                Picker("", selection: $selectedOption) {
+                                    ForEach(options, id:\.self) { option in
+                                            Text(option).tag(option)
+                                    }
+                                }
+                                .padding()
+                                .labelsHidden()
+                                .frame(width:145, height:50)
+                                .accentColor(.black)
+                                .background(Color.black.opacity(0.05))
+                                .cornerRadius(10)
+                                .onChange(of: selectedOption) { newValue in
+                                    viewModel.gender = newValue
+                                }
+                                
                                 
                                 TextField("Age", text: $viewModel.age)
                                     .autocorrectionDisabled(true)

@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import FirebaseAuth
 
 // LogInEmailViewModel
 // used in conjunction with LogInView
@@ -20,5 +21,15 @@ final class LogInEmailViewModel: ObservableObject{
     func signIn() async throws {
         
         try await AuthManager.shared.signInUser(email: email, password: password)
+        let user = Auth.auth().currentUser
+        
+        if (user?.isEmailVerified != true)
+        {
+            throw VerificationError.notVerified
         }
+    }
+    
+    enum VerificationError: Error{
+        case notVerified
+    }
 }

@@ -12,11 +12,14 @@ import FirebaseAuth
 struct SignUpView: View {
     
     @StateObject private var viewModel = SignUpEmailViewModel()
-    @State private var createUser = false
+    @State private var verifyEmail = false
     
     // error variables
     @State private var errorAlert = false
     @State private var errorMessage = ""
+    
+    @State private var showPopUpEmail = false
+    @State private var showPopUpPassword = false
     
     var body: some View {
         VStack(){
@@ -29,17 +32,57 @@ struct SignUpView: View {
                 .padding(.vertical, 10)
             
             // App Name
-            Text("Get Matched.")
+            Text("Vandy Tennis")
                 .font(.largeTitle)
             
             // Form Fields
             VStack(spacing:15){
                 
                 // Email Input
-                InputView(text: $viewModel.email, title: "Vanderbilt Email")
+                ZStack(alignment: .trailing){
+                    InputView(text: $viewModel.email, title: "Vanderbilt Email")
+                    
+                    Button
+                    {
+                       showPopUpEmail = true
+                    }label:{
+                        Image(systemName: "info.circle")
+                            .imageScale(.large)
+                            .fontWeight(.bold)
+                            .foregroundColor(Color(.systemGray))
+                            .padding(.trailing, 5)
+                    }
+                    .popover(isPresented:$showPopUpEmail){
+                        VStack{
+                            Text("Email must be a valid Vanderbilt Univeristy email address")
+                        }
+                        .presentationCompactAdaptation(.popover)
+                    }
+                
+                }
                 
                 // Password Input
-                InputView(text: $viewModel.password, title: "Password", isSecureField: true)
+                ZStack(alignment: .trailing){
+                    InputView(text: $viewModel.password, title: "Password", isSecureField: true)
+                    
+                    Button
+                    {
+                       showPopUpPassword = true
+                    }label:{
+                        Image(systemName: "info.circle")
+                            .imageScale(.large)
+                            .fontWeight(.bold)
+                            .foregroundColor(Color(.systemGray))
+                            .padding(.trailing, 5)
+                    }
+                    .popover(isPresented:$showPopUpPassword){
+                        VStack{
+                            Text("Password must be greater than 8 characters")
+                        }
+                        .presentationCompactAdaptation(.popover)
+                    }
+                
+                }
                 
                 // Confirm Password Input
                 ZStack(alignment: .trailing){
@@ -71,7 +114,7 @@ struct SignUpView: View {
                 Task{
                     do{
                         try await viewModel.signUp()
-                        createUser = true
+                        verifyEmail = true
                     }catch AuthErrorCode.emailAlreadyInUse{
                         errorAlert = true
                         errorMessage = " \(viewModel.email) is already in use!"
@@ -107,7 +150,7 @@ struct SignUpView: View {
             }
             
             // Navigates to Create Profile Page
-            NavigationLink("", destination: CreateProfileView().navigationBarBackButtonHidden(true), isActive: $createUser)
+            NavigationLink("", destination: EmailVerificationView().navigationBarBackButtonHidden(true), isActive: $verifyEmail)
             
             
             // Navigates to Log In Page
@@ -135,7 +178,7 @@ struct SignUpView: View {
 extension SignUpView: AuthenticationFormProtocol{
     var formIsValid: Bool {
         return !viewModel.email.isEmpty
-        && viewModel.email.contains("@vanderbilt.edu")
+//        && viewModel.email.contains("@vanderbilt.edu")
         && !viewModel.password.isEmpty
         && viewModel.password.count > 8
         && viewModel.password == viewModel.confirmPassword

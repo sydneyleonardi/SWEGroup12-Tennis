@@ -31,11 +31,16 @@ struct CalendarResView: View {
     //Note: default display is court 1
     @State var courtNum: String = "1"
     
-    //Note: switch to userID - ask sydney
-    @State var currUser: String = "Sophia Fayer"
+    //call view model to get current user
+    @ObservedObject var profileVM = ProfileViewModel()
    
     
     var body: some View {
+        
+        
+        let currUser = profileVM.user?.name ?? ""
+
+        
         NavigationStack {
             ZStack {
                     Color.white
@@ -62,9 +67,9 @@ struct CalendarResView: View {
                         .bold()
                         .foregroundColor(.white)
                         .frame(width: 120, height: 50)
-                        .background(.gray)
+                        .background(.color1)
                         .cornerRadius(20)
-                        .padding(.bottom, 10)
+
                         
                         //display current reservations that have already been made
                         Button(action: { 
@@ -77,9 +82,9 @@ struct CalendarResView: View {
                         .bold()
                         .foregroundColor(.white)
                         .frame(width: 120, height: 50)
-                        .background(.gray)
+                        .background(.color1)
                         .cornerRadius(20)
-                        .padding(.bottom, 10)
+
                         
                         //display current reservations that have already been made
                         Button(action: { 
@@ -92,9 +97,9 @@ struct CalendarResView: View {
                         .bold()
                         .foregroundColor(.white)
                         .frame(width: 120, height: 50)
-                        .background(.gray)
+                        .background(.color1)
                         .cornerRadius(20)
-                        .padding(.bottom, 10)
+                        //.padding(.bottom, 10)
                     }
                     HStack{
                         //display court1 info
@@ -110,7 +115,6 @@ struct CalendarResView: View {
                         .frame(width: 85, height: 40)
                         .background(CustomColor.myColor)
                         .cornerRadius(20)
-                        .padding(.bottom, 10)
                         
                         //display court 2 info
                         Button(action: { 
@@ -125,8 +129,7 @@ struct CalendarResView: View {
                         .frame(width: 85, height: 40)
                         .background(CustomColor.myColor)
                         .cornerRadius(20)
-                        .padding(.bottom, 10)
-                        
+
                         //display court 3 info
                         Button(action: {
                             courtNum = "3"
@@ -140,7 +143,6 @@ struct CalendarResView: View {
                         .frame(width: 85, height: 40)
                         .background(CustomColor.myColor)
                         .cornerRadius(20)
-                        .padding(.bottom, 10)
                         
                         //display court 4 info
                         Button(action: {
@@ -155,18 +157,22 @@ struct CalendarResView: View {
                         .frame(width: 85, height: 40)
                         .background(CustomColor.myColor)
                         .cornerRadius(20)
-                        .padding(.bottom, 10)
                     }
                     .onAppear(){
                         availableRes = true
+        
                     }
                     .padding(.vertical)
 
                     
+                    ScrollView{
                     //Displays calendar
                     DatePicker("Select Date", selection: $selectedDate, in: Date()..., displayedComponents: [.date])
                         .datePickerStyle(.graphical)
+                        .tint(CustomColor.myColor)
                         .padding(.horizontal)
+
+
                     
 
                     if (availableRes && !yourResExist){
@@ -189,8 +195,12 @@ struct CalendarResView: View {
 
                     
                     //diplays and filters reservations previously fetched
-                    ScrollView {
-                        ForEach(resVM.reservations) {reservation in
+                        ForEach(//sort arrays by start time
+                            resVM.reservations.sorted(by: {
+                            res1, res2 in
+                                res1.start < res2.start
+                            }))
+                        {reservation in
                             let dateFormatted: String = selectedDate.formatted(date: .numeric, time: .omitted)
                             
                             //filters available reservations based on day and availability
@@ -200,7 +210,7 @@ struct CalendarResView: View {
                                 
                                 //pass name in
                                 NavigationLink {ResTimeView(
-                                    //name: currUser,
+                                    name: currUser,
                                     courtNum: courtNum,
                                     time: timePeriod,
                                     date: selectedDate.formatted(date: .complete, time: .omitted),
@@ -240,9 +250,11 @@ struct CalendarResView: View {
                                 
                                 //change to new view of deleting page
                                 
-                                NavigationLink {DeleteResView(
+                                NavigationLink {
+                                    
+                                    DeleteResView(
+                                    name: currUser,
                                     courtNum: courtNum,
-                                    //name: currUser,
                                     time: timePeriod,
                                     date: selectedDate.formatted(date: .complete, time: .omitted),
                                     id:reservation.id)}
@@ -270,6 +282,9 @@ struct CalendarResView: View {
         //Note: the default court is court 1
         .onAppear() {
             self.resVM.fetchRes(courtNum: courtNum)
+            Task{
+                            try? await profileVM.loadCurrentUser()
+            }
         }
     }
     
@@ -289,14 +304,25 @@ struct ResTimeView: View {
     @State var date = ""
     @State var id = ""
     
+    //call view model to get current user
+    //@ObservedObject var profileVM = ProfileViewModel()
+    
+    
     var body: some View{
+        //let currUser = profileVM.user?.name
+        
         NavigationStack {
             VStack(alignment: .center, spacing: 0) {
-                // Include day
-                //
-                Text("Reserve Court \(courtNum)")
-                    .font(.largeTitle)
+                
+                Image("Logo")
                     .padding()
+                
+                Text("\(name.components(separatedBy: " ")[0]), do you want to reserve Court \(courtNum)?")
+                    .multilineTextAlignment(.center)
+                    .font(.title)
+                    .padding(.horizontal,10)
+                    .padding()
+                
                 
                 Text("\(date)")
                     .font(.headline)
@@ -306,21 +332,21 @@ struct ResTimeView: View {
                     .padding()
                 
                 
-                // Player's name
-                TextField("Name", text: $name)
-                    .autocorrectionDisabled(true)
-                    .autocapitalization(.none)
-                    .padding()
-                    .frame(width:300, height:50)
-                    .background(Color.black.opacity(0.05))
-                    .cornerRadius(10)
-                    .padding()
+//                // Player's name
+//                TextField("Name", text: $name)
+//                    .autocorrectionDisabled(true)
+//                    .autocapitalization(.none)
+//                    .padding()
+//                    .frame(width:300, height:50)
+//                    .background(Color.black.opacity(0.05))
+//                    .cornerRadius(10)
+//                    .padding()
 
             
                 //Button to confirm reservation
                 //Switches views and writes to the database
                 NavigationLink {
-                    ResConfirmationView(name:name, courtNum:courtNum, time: time, date:date)
+                    ResConfirmationView(name: name, courtNum:courtNum, time: time, date:date)
                         .onAppear{
                             //writes to the database
                             resVM.makeRes(id: id, player: name, courtNum: courtNum)
@@ -340,6 +366,12 @@ struct ResTimeView: View {
                 
                 
             }
+//            .onAppear(){
+//                Task{
+//                        try? await profileVM.loadCurrentUser()
+//                }
+//                print("2: \(currUser)")
+//            }
         }
     }
     
@@ -354,42 +386,46 @@ struct ResConfirmationView: View{
     @State var time = ""
     @State var date = ""
     
+    
+    
     var body: some View{
         
         NavigationStack {
             VStack {
-                Image("Logo")
-                    .padding()
-                
-                
-                Text("Reservation confirmed!")
-                    .multilineTextAlignment(.center)
-                    .font(.largeTitle)
-                    .bold()
-                    .padding()
-                
-                Text("\(name), your reservation for \(time) on \(date) at Court \(courtNum ) has been confirmed.")
-                    .multilineTextAlignment(.center)
-                    .bold()
-                    .padding(.horizontal,10)
-                    .padding()
-                                
-                
-                //After user closes the confirmation screen, they will be brought back to the Calendar screen
-                //Note: need to ensure that CalendarView is the root view and users cannot navigate back to previous screens after closing
-                NavigationLink {CalendarResView().navigationBarBackButtonHidden(true)}
-            label: {
-                Text("Close")
-                    .font(.headline)
-                    .bold()
-                    .foregroundColor(.white)
-                    .frame(width: 300, height: 50)
-                    .background(CustomColor.myColor)
-                    .cornerRadius(10)
-                    .padding(.top, 10)
-                    .navigationBarBackButtonHidden(true)
-                
-            }
+                    Image("Logo")
+                        .padding()
+                    
+                    
+                    Text("Reservation Confirmed!")
+                        .multilineTextAlignment(.center)
+                        .font(.largeTitle)
+                        .bold()
+                        .padding()
+                    
+                    Text("\(name.components(separatedBy: " ")[0]), your reservation for \(time) on \(date) at Court \(courtNum ) has been confirmed.")
+                        .multilineTextAlignment(.center)
+                        .bold()
+                        .padding(.horizontal,10)
+                        .padding()
+                                    
+                    
+                    //After user closes the confirmation screen, they will be brought back to the Calendar screen
+                    //Note: need to ensure that CalendarView is the root view and users cannot navigate back to previous screens after closing
+                    NavigationLink {
+                        CalendarResView().navigationBarBackButtonHidden(true)
+                    }
+                label: {
+                    Text("Close")
+                        .font(.headline)
+                        .bold()
+                        .foregroundColor(.white)
+                        .frame(width: 300, height: 50)
+                        .background(CustomColor.myColor)
+                        .cornerRadius(10)
+                        .padding(.top, 10)
+                        .navigationBarBackButtonHidden(true)
+                    
+                }
             }
         }
     }
@@ -407,6 +443,7 @@ struct DeleteResView: View{
     @State var date = ""
     @State var id = ""
     
+    
     var body: some View{
         NavigationStack {
             VStack(alignment: .center, spacing: 0) {
@@ -415,10 +452,14 @@ struct DeleteResView: View{
                     .padding()
                 
                 // Include more info - day, time, court, name,etc.
-                Text("Do you want to delete your reservation?")
-                    .font(.title)
+                Text("\(name.components(separatedBy: " ")[0]), do you want to delete your reservation?")
                     .multilineTextAlignment(.center)
+                    .font(.title)
+                    .padding(.horizontal,10)
                     .padding()
+                
+                Text("Court \(courtNum)")
+                    .font(.headline)
                 
                 Text("\(date)")
                     .font(.headline)
@@ -464,42 +505,44 @@ struct DeleteResConfirmationView: View{
     @State var date = ""
     
     var body: some View{
+ 
         NavigationStack {
             VStack {
-                Image("Logo")
-                    .padding()
-                
-                
-                Text("Reservation Deleted.")
-                    .multilineTextAlignment(.center)
-                    .font(.largeTitle)
-                    .bold()
-                    .padding()
-                
-                Text("\(name), your reservation for \(time) on \(date) at Court \(courtNum ) has been deleted.")
-                    .multilineTextAlignment(.center)
-                    .bold()
-                    .padding(.horizontal,10)
-                    .padding()
-                                
-                
-                //After user closes the confirmation screen, they will be brought back to the Calendar screen
-                //Note: need to ensure that CalendarView is the root view and users cannot navigate back to previous screens after closing
-                NavigationLink {CalendarResView().navigationBarBackButtonHidden(true)}
-            label: {
-                Text("Close")
-                    .font(.headline)
-                    .bold()
-                    .foregroundColor(.white)
-                    .frame(width: 300, height: 50)
-                    .background(CustomColor.myColor)
-                    .cornerRadius(10)
-                    .padding(.top, 10)
-                    .navigationBarBackButtonHidden(true)
-                
-            }
+                    Image("Logo")
+                        .padding()
+                    
+                    
+                    Text("Reservation Deleted")
+                        .multilineTextAlignment(.center)
+                        .font(.largeTitle)
+                        .bold()
+                        .padding()
+                    
+                    Text("\(name), your reservation for \(time) on \(date) at Court \(courtNum ) has been deleted.")
+                        .multilineTextAlignment(.center)
+                        .bold()
+                        .padding(.horizontal,10)
+                        .padding()
+                                    
+                    
+                    //After user closes the confirmation screen, they will be brought back to the Calendar screen
+                    //Note: need to ensure that CalendarView is the root view and users cannot navigate back to previous screens after closing
+                    NavigationLink {CalendarResView().navigationBarBackButtonHidden(true)}
+                label: {
+                    Text("Close")
+                        .font(.headline)
+                        .bold()
+                        .foregroundColor(.white)
+                        .frame(width: 300, height: 50)
+                        .background(CustomColor.myColor)
+                        .cornerRadius(10)
+                        .padding(.top, 10)
+                        .navigationBarBackButtonHidden(true)
+                    
+                }
             }
         }
+
     }
 }
 

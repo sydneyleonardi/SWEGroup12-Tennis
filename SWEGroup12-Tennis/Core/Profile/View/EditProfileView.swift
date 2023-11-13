@@ -8,6 +8,7 @@
 
 
 import SwiftUI
+import SDWebImageSwiftUI
 
 struct EditProfileView: View {
 
@@ -20,16 +21,36 @@ struct EditProfileView: View {
         VStack{
             Text("Edit Profile")
                 .font(.headline)
-                .padding(.bottom, 20)
             
             ScrollView{
                 VStack{
-                    Image("Logo")
-                        .resizable()
-                        .scaledToFill()
-                        .frame(width: 80, height: 80)
-                        .padding(.vertical, 10)
+                    if let profileImageURL = viewModel.user?.profileImageURL, !profileImageURL.isEmpty {
+                            WebImage(url: URL(string: profileImageURL))
+                                .resizable()
+                                .scaledToFill()
+                                .frame(width: 100, height: 100)
+                                .overlay(RoundedRectangle(cornerRadius: 100)
+                                    .stroke(.black, lineWidth: 2))
+                                .clipped()
+                                .cornerRadius(50)
+                                .padding(.vertical, 10)
+                                .foregroundColor(CustomColor.myColor)
+                                .transition(.opacity)
+                        } else {
+                            Image(systemName: "person")
+                                .resizable()
+                                .scaledToFill()
+                                .scaleEffect(0.5)
+                                .frame(width: 100, height: 100)
+                                .overlay(RoundedRectangle(cornerRadius: 100)
+                                    .stroke(.black, lineWidth: 2))
+                                .clipped()
+                                .cornerRadius(50)
+                                .padding(.vertical, 10)
+                                .foregroundColor(CustomColor.myColor)
+                        }
                     
+                    /* Deal with editing a picture later 
                     NavigationLink{
                         
                     }label:{
@@ -38,6 +59,7 @@ struct EditProfileView: View {
                         
                     }
                     .padding(.bottom, 20)
+                     */
                 }
                 HStack{
                     VStack(alignment: .leading){

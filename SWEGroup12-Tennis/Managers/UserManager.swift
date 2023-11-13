@@ -4,8 +4,6 @@
 //
 //  Created by Sydney Leonardi on 10/16/23.
 //
-// Implement EditProfileView
-// Add Profile Image 
 
 import Foundation
 import FirebaseFirestore

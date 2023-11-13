@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import FirebaseAuth
 
 // SignUpEmailViewModel
 // used in conjunction with SignUpView
@@ -17,11 +18,15 @@ final class SignUpEmailViewModel: ObservableObject{
     @Published var confirmPassword = ""
     
     
+    
     // signs up user with user inputted email + password and makes a new user in the database
     func signUp()async throws {
         
         let AuthDataResult = try await AuthManager.shared.createUser(email: email, password: password)
         try await UserManager.shared.createNewUser(auth: AuthDataResult)
+        
+        let user = Auth.auth().currentUser
+        try await user?.sendEmailVerification()
     }
     
 }

@@ -27,7 +27,7 @@ class ResViewModel: ObservableObject {
     
     //grab reservation data from firestore db
     func fetchRes(courtNum: String) {
-
+        
         //adjust path based on court number
         let path = "courtReservations/court" + courtNum + "/court" + courtNum + "Reservations"
         
@@ -84,10 +84,86 @@ class ResViewModel: ObservableObject {
     }
     
     //block players from scheduling more than one res at a time
+    func createRes(courtNum: String, date: String){
+        let path = "courtReservations/court" + courtNum + "/court" + courtNum + "Reservations"
+        var start = ""
+        var end = ""
+        var uuid: String
+        
+        
+//        for i in 8...10{
+//            //switch times
+//            start = String(i)+":00am"
+//            end = String(i+1)+":00am"
+//            uuid = UUID().uuidString
+//            
+//            db.collection(path).document(uuid).setData(["id": uuid, "date": date, "reserved":false, "player": "", "playerID": "", "start": start, "end": end]) {error in
+//                if let error = error{
+//                    print("Error updating document :\(error)") //handle db writing error
+//                }
+//                else{
+//                    print("created reservation times") //successful write to db
+//                }
+//            }
+//        }
+        
+        //10:00am-11:00am (am and pm switch)
+        start = "10:00am"
+        end = "11:00am"
+        uuid = UUID().uuidString
+        db.collection(path).document(uuid).setData(["id": uuid, "date": date, "reserved":false, "player": "", "playerID": "", "start": start, "end": end]) {error in
+            if let error = error{
+                print("Error updating document :\(error)") //handle db writing error
+            }
+            else{
+                print("created reservation times") //successful write to db
+            }
+        }
+        
+        //11:00am-12:00pm (am and pm switch)
+        start = "11:00am"
+        end = "12:00pm"
+        uuid = UUID().uuidString
+        db.collection(path).document(uuid).setData(["id": uuid, "date": date, "reserved":false, "player": "", "playerID": "", "start": start, "end": end]) {error in
+            if let error = error{
+                print("Error updating document :\(error)") //handle db writing error
+            }
+            else{
+                print("created reservation times") //successful write to db
+            }
+        }
+        
+        //12:00pm-1:00pm (12 to 1 switch)
+        start = "12:00pm"
+        end = "1:00pm"
+        uuid = UUID().uuidString
+        db.collection(path).document(uuid).setData(["id": uuid, "date": date, "reserved":false, "player": "", "playerID": "", "start": start, "end": end]) {error in
+            if let error = error{
+                print("Error updating document :\(error)") //handle db writing error
+            }
+            else{
+                print("created reservation times") //successful write to db
+            }
+        }
+    
+        for j in 1...7{
+            //switch times
+            start = String(j)+":00pm"
+            end = String(j+1)+":00pm"
+            uuid = UUID().uuidString
+            
+            db.collection(path).document(uuid).setData(["id": uuid, "date": date, "reserved":false, "player": "", "playerID": "", "start": start, "end": end]) {error in
+                if let error = error{
+                    print("Error updating document :\(error)") //handle db writing error
+                }
+                else{
+                    print("created reservation times") //successful write to db
+                }
+            }
+        }
+    }
     
 }
-
-
 
 
 

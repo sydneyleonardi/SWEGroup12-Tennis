@@ -5,13 +5,11 @@
 //  Created by Sydney Leonardi on 10/15/23.
 //
 
-// TO DO
-// Fix error + authentication rules + alerts 
-
 import SwiftUI
 
 struct LogInView: View {
     @StateObject private var viewModel = LogInEmailViewModel()
+    //@State private var error: LogInEmailViewModel.VerificationError?
     
     // error messages
     @State private var errorAlert = false
@@ -19,6 +17,7 @@ struct LogInView: View {
     
     // navigation variable
     @State private var showProfile = false
+    @State private var showPopUp = false
     
     var body: some View {
         NavigationStack{
@@ -32,14 +31,35 @@ struct LogInView: View {
                     .padding(.vertical, 10)
                 
                 // Title of App
-                Text("Get Matched.")
+                Text("Vandy Tennis")
                     .font(.largeTitle)
                 
                 // Text Fields for Email + Password
                 VStack(spacing:15){
                     InputView(text: $viewModel.email, title: "Email")
                     
-                    InputView(text: $viewModel.password, title: "Password", isSecureField: true)
+                    ZStack(alignment: .trailing){
+                        InputView(text: $viewModel.password, title: "Password", isSecureField: true)
+                        
+                        Button
+                        {
+                           showPopUp = true
+                        }label:{
+                            Image(systemName: "info.circle")
+                                .imageScale(.large)
+                                .fontWeight(.bold)
+                                .foregroundColor(Color(.systemGray))
+                                .padding(.trailing, 5)
+                        }
+                        .popover(isPresented:$showPopUp){
+                            VStack{
+                                Text("Password must be greater than 8 characters")
+                            }
+                            .presentationCompactAdaptation(.popover)
+                        }
+                    
+                    }
+                    
                     
                 }
                 
@@ -58,7 +78,11 @@ struct LogInView: View {
                         do{
                             try await viewModel.signIn()
                             showProfile = true
+                        }catch LogInEmailViewModel.VerificationError.notVerified{
+                            errorMessage = "This account is not yet verified. Check your email to verify your account."
+                            errorAlert = true
                         }catch{
+                            errorMessage = "Email and/or password are invalid"
                             errorAlert = true
                         }
                     }
@@ -73,7 +97,7 @@ struct LogInView: View {
                 .disabled(!formIsValid)
                 .opacity(formIsValid ? 1.0: 0.5)
                 .alert(isPresented: $errorAlert) {
-                    Alert(title: Text("Invalid Login"),
+                    Alert(title: Text(errorMessage),
                           message: Text("Email and/or password are invalid"),
                           dismissButton: .default(Text("OK")) {
                         errorAlert = false

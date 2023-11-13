@@ -10,8 +10,10 @@ import SwiftUI
 struct HomeView: View {
     var body: some View {
         TabView{
+            
             //replace with Kathleen's Matching View
-            MatchesDummyView()
+            // edit showSignInView 
+            MatchesListView(showSignIn: .constant(false))
                 .tabItem { Label("Matches", systemImage: "person.3") }
             
             //replace with CalendarView
@@ -20,7 +22,7 @@ struct HomeView: View {
                 .tabItem { Label("Calendar", systemImage: "calendar") }
             
             //replace with Jhanavi's Messaging View
-            MessageDummyView()
+            MainMessagesView()
                 .tabItem { Label("Chat", systemImage: "message.fill") }
             
             // potentially missing settings
@@ -32,24 +34,7 @@ struct HomeView: View {
     }
 }
 
-struct CalDummyView: View {
-    var body: some View {
-        Text("Your calendar page will go here")
-    }
-}
 
-
-struct MessageDummyView: View {
-    var body: some View {
-        Text("Your messages will go here")
-    }
-}
-
-struct MatchesDummyView: View {
-    var body: some View {
-        Text("Your matches will go here")
-    }
-}
 
 
 #Preview {

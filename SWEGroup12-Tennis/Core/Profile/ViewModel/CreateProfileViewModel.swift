@@ -25,29 +25,21 @@ final class CreateProfileViewModel: ObservableObject{
     @Published var profileImageURL = ""
     @Published var datesSelected = Array(repeating:0, count: 15)
     
-    func persistImageToStorage() async throws
+    func persistImageToStorage() async throws -> String
     {
         let authUser = try AuthManager.shared.fetchUser()
         let ref = Storage.storage().reference(withPath:authUser.uid)
-        guard let imageData = profileImage?.jpegData(compressionQuality: 0.5) else {return}
+        guard let imageData = profileImage?.jpegData(compressionQuality: 0.5) else 
+        {
+            throw ImageError.imageDataError
+        }
         
-        ref.putData(imageData, metadata: nil) { metdata, err in
-            if let err = err {
-                print("Failed to push image to storage: \(err)")
-                return
-            }
-            
-            ref.downloadURL { url, err in
-                if let err = err {
-                    print("Failed to retreive downloadURL: \(err)")
-                    return
-                }
-                
-                print("Successfully stored image to url: \(url?.absoluteString ?? "")")
-                
-                guard let url = url else {return}
-                self.profileImageURL = url.absoluteString
-            }
+        do{
+            let _ = try await ref.putData(imageData, metadata: nil)
+            let url = try await ref.downloadURL()
+            return url.absoluteString
+        }catch{
+            throw ImageError.storageDownloadError
         }
     }
 
@@ -60,14 +52,17 @@ final class CreateProfileViewModel: ObservableObject{
         }
         let authUser = try AuthManager.shared.fetchUser()
         
-        do{
-            try await persistImageToStorage()
-        }catch{
-            print("Failed to add image to storage \(error)")
-        }
-    
-        let user = DBUser(userId: authUser.uid, name: name, gender: gender, age: age, skillLevel: skillLevel, playType: playType, email: authUser.email, description: description, datesSelected: datesSelected, profileImageURL: self.profileImageURL)
-        
+        let profileImageURL = try await persistImageToStorage()
+        let user = DBUser(userId: authUser.uid, name: name, gender: gender, age: age, skillLevel: skillLevel, playType: playType, email: authUser.email, description: description, datesSelected: datesSelected, profileImageURL: profileImageURL)
         try await UserManager.shared.createUserProfile(user: user)
+    }
+
+    
+    // EDIT THESE + HANDLE THEM 
+    
+    enum ImageError: Error {
+        case imageDataError
+        case storageUploadError
+        case storageDownloadError
     }
 }

@@ -13,7 +13,7 @@ import SwiftUI
 struct UpdatePasswordView: View {
     @StateObject private var viewModel = UpdatePasswordViewModel()
     @Environment(\.dismiss) var dismiss
-    @State private var showSettings = false
+    @State private var showLogIn = false
     
     var body: some View {
         VStack{
@@ -72,11 +72,12 @@ struct UpdatePasswordView: View {
                       message: Text("Your password has been successfully updated"),
                       dismissButton: .default(Text("OK")) {
                     viewModel.alert = false
-                    showSettings = true
+                    showLogIn = true
                 })
             }
             
-            NavigationLink("", destination: SettingsView(), isActive: $showSettings)
+            NavigationLink("", destination: LogInView().navigationBarBackButtonHidden(true), isActive: $showLogIn)
+            
             
             Spacer()
             

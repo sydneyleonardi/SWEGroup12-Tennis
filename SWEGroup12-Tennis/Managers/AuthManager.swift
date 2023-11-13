@@ -1,6 +1,5 @@
 //
 //  AuthManager.swift
-//  Tester2
 //
 //  Created by Sydney Leonardi on 10/15/23.
 //
