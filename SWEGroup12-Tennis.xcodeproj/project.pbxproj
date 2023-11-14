@@ -86,11 +86,11 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		0E330C5F2B03E74B0078D435 /* OtherProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = OtherProfileView.swift; path = "SWEGroup12-Tennis/Core/OtherProfileView.swift"; sourceTree = SOURCE_ROOT; };
-		0E330C612B03E7630078D435 /* Match.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Match.swift; path = "SWEGroup12-Tennis/Core/Match.swift"; sourceTree = SOURCE_ROOT; };
-		0E330C632B03E80B0078D435 /* MatchesListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = MatchesListView.swift; path = "SWEGroup12-Tennis/Core/MatchesListView.swift"; sourceTree = SOURCE_ROOT; };
-		0E330C652B03E81B0078D435 /* FilterOptionsMenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = FilterOptionsMenuView.swift; path = "SWEGroup12-Tennis/Core/FilterOptionsMenuView.swift"; sourceTree = SOURCE_ROOT; };
-		0E330C672B03E8280078D435 /* MatchesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = MatchesViewModel.swift; path = "SWEGroup12-Tennis/Core/MatchesViewModel.swift"; sourceTree = SOURCE_ROOT; };
+		0E330C5F2B03E74B0078D435 /* OtherProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = OtherProfileView.swift; path = "SWEGroup12-Tennis/Core/Matching/OtherProfileView.swift"; sourceTree = SOURCE_ROOT; };
+		0E330C612B03E7630078D435 /* Match.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Match.swift; path = "SWEGroup12-Tennis/Core/Matching/Match.swift"; sourceTree = SOURCE_ROOT; };
+		0E330C632B03E80B0078D435 /* MatchesListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = MatchesListView.swift; path = "SWEGroup12-Tennis/Core/Matching/MatchesListView.swift"; sourceTree = SOURCE_ROOT; };
+		0E330C652B03E81B0078D435 /* FilterOptionsMenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = FilterOptionsMenuView.swift; path = "SWEGroup12-Tennis/Core/Matching/FilterOptionsMenuView.swift"; sourceTree = SOURCE_ROOT; };
+		0E330C672B03E8280078D435 /* MatchesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = MatchesViewModel.swift; path = "SWEGroup12-Tennis/Core/Matching/MatchesViewModel.swift"; sourceTree = SOURCE_ROOT; };
 		0E4FF5DE2AC4D81F009FC5F6 /* SWEGroup12-Tennis.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "SWEGroup12-Tennis.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		0E4FF5E12AC4D81F009FC5F6 /* SWEGroup12_TennisApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SWEGroup12_TennisApp.swift; sourceTree = "<group>"; };
 		0E4FF5E32AC4D81F009FC5F6 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -176,6 +176,18 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0E330C692B03E9E80078D435 /* Matching */ = {
+			isa = PBXGroup;
+			children = (
+				0E330C5F2B03E74B0078D435 /* OtherProfileView.swift */,
+				0E330C612B03E7630078D435 /* Match.swift */,
+				0E330C632B03E80B0078D435 /* MatchesListView.swift */,
+				0E330C652B03E81B0078D435 /* FilterOptionsMenuView.swift */,
+				0E330C672B03E8280078D435 /* MatchesViewModel.swift */,
+			);
+			path = Matching;
+			sourceTree = "<group>";
+		};
 		0E4FF5D52AC4D81F009FC5F6 = {
 			isa = PBXGroup;
 			children = (
@@ -243,18 +255,6 @@
 				0E8036DC2AD5CF5E0026F865 /* ViewModel */,
 			);
 			path = Authentication;
-			sourceTree = "<group>";
-		};
-		0E5489C62B01A3AE0049BF26 /* Matching */ = {
-			isa = PBXGroup;
-			children = (
-				0E330C5F2B03E74B0078D435 /* OtherProfileView.swift */,
-				0E330C612B03E7630078D435 /* Match.swift */,
-				0E330C632B03E80B0078D435 /* MatchesListView.swift */,
-				0E330C652B03E81B0078D435 /* FilterOptionsMenuView.swift */,
-				0E330C672B03E8280078D435 /* MatchesViewModel.swift */,
-			);
-			path = Matching;
 			sourceTree = "<group>";
 		};
 		0E5489C72B01A3BA0049BF26 /* Messaging */ = {
@@ -328,8 +328,8 @@
 		0E8036CD2AD5C6040026F865 /* Core */ = {
 			isa = PBXGroup;
 			children = (
+				0E330C692B03E9E80078D435 /* Matching */,
 				0E5489C72B01A3BA0049BF26 /* Messaging */,
-				0E5489C62B01A3AE0049BF26 /* Matching */,
 				0E8F141F2AF487AC002B28AF /* Calendar */,
 				0E4FF6212AC52956009FC5F6 /* Authentication */,
 				0E758EEF2ACF112900737913 /* Profile */,
