@@ -325,6 +325,297 @@ class UserManagerTests: XCTestCase {
     // Add more test cases for the remaining functions as needed.
 }
 
+class MockFirestore {
+    var didUpdateData = false
+    var updatedDocumentID: String = ""
+    var updatedData: [String: Any] = [:]
+
+    func collection(_ path: String) -> MockFirestore {
+        // You might need to handle nested collections depending on your implementation
+        return self
+    }
+
+    func document(_ documentPath: String) -> MockFirestore {
+        // You might need to handle specific document references depending on your implementation
+        return self
+    }
+
+    func updateData(_ data: [String: Any], completion: @escaping (Error?) -> Void) {
+        didUpdateData = true
+        updatedData = data
+        // Simulate completion or error handling if needed
+        completion(nil)
+    }
+}
+
+class CalendarResViewTests: XCTestCase {
+    
+    func testCalendarResView_InitialState() {
+        let viewModel = ResViewModel()
+        let view = CalendarResView(resVM: viewModel)
+        
+        //XCTAssertEqual(view.selectedDate, Date())
+        XCTAssertTrue(view.availableRes)
+        XCTAssertFalse(view.availableResExist)
+        XCTAssertEqual(view.courtNum, "1")
+    }
+    
+    func testResViewModel_FetchRes() {
+        let viewModel = ResViewModel()
+        let courtNum = "1"
+        
+        viewModel.fetchRes(courtNum: courtNum)
+        
+        // You can write assertions here to verify the behavior of the fetchRes method.
+        
+
+            func testFetchRes() {
+                // Assuming initially the reservations array is empty
+                XCTAssertTrue(viewModel.reservations.isEmpty)
+
+                // Fetch reservations for court 1
+                viewModel.fetchRes(courtNum: "1")
+
+                // After fetch, the reservations array should not be empty
+                XCTAssertFalse(viewModel.reservations.isEmpty)
+
+                // Assuming you're fetching reservations for court 1 and the fetched reservation has the same court number
+                XCTAssertEqual(viewModel.reservations.first?.court, "1")
+
+                // Perform more assertions based on your business logic and what is expected from fetchRes method
+            }
+        
+
+    }
+}
+
+
+class CalendarResViewTests2: XCTestCase {
+    var app: XCUIApplication!
+
+    override func setUp() {
+        continueAfterFailure = false
+        app = XCUIApplication()
+        app.launch()
+    }
+
+    func testViewInitialState() {
+        let calendarLabel = app.staticTexts["Calendar"]
+        XCTAssertTrue(calendarLabel.exists)
+
+        let defaultSelectedDate = app.datePickers["Select Date"]
+        XCTAssertTrue(defaultSelectedDate.exists)
+
+        let court1Button = app.buttons["Court 1"]
+        XCTAssertTrue(court1Button.exists)
+    }
+
+    func testNavigateToResTimeView() {
+        let court1Button = app.buttons["Court 1"]
+        court1Button.tap()
+
+        // Simulate interactions and assert expected elements in ResTimeView
+        let confirmationButton = app.buttons["Confirm Reservation"]
+        XCTAssertTrue(confirmationButton.exists)
+    }
+
+    func testNavigateToDeleteResView() {
+        let court1Button = app.buttons["Court 1"]
+        court1Button.tap()
+
+        // Navigate to DeleteResView
+        let confirmationButton = app.buttons["Confirm Reservation"]
+        confirmationButton.tap()
+
+        // Simulate interactions and assert expected elements in DeleteResView
+        let deleteButton = app.buttons["Delete Reservation"]
+        XCTAssertTrue(deleteButton.exists)
+    }
+}
+
+
+
+class ResTimeViewTests: XCTestCase {
+    
+    func testResTimeView_InitialState() {
+        let viewModel = ResViewModel()
+        let view = ResTimeView(resVM: viewModel)
+        
+        XCTAssertEqual(view.name, "")
+        XCTAssertEqual(view.email, "")
+        XCTAssertEqual(view.courtNum, "")
+        XCTAssertEqual(view.time, "")
+        XCTAssertEqual(view.date, "")
+        XCTAssertEqual(view.id, "")
+    }
+    
+    func testResViewModel_MakeRes() {
+        let viewModel = ResViewModel()
+        let id = "someId"
+        let player = "John Doe"
+        let courtNum = "1"
+        
+        viewModel.makeRes(id: id, player: player, courtNum: courtNum)
+        
+        // You can write assertions here to verify the behavior of the makeRes method.
+        
+        var resViewModel: ResViewModel!
+        var mockFirestore: MockFirestore! // Create a mock for Firestore
+        
+        func setUp() {
+            super.setUp()
+            mockFirestore = MockFirestore() // Initialize your mock Firestore
+            resViewModel = ResViewModel()
+            //resViewModel.db = mockFirestore // Inject the mock Firestore
+            // Set up any initial conditions if needed
+        }
+        
+        func tearDown() {
+            // Clean up after each test if needed
+            mockFirestore = nil
+            resViewModel = nil
+            super.tearDown()
+        }
+        
+        func testMakeRes() {
+            // Define your expected data
+            let id = "12345"
+            let player = "TestPlayer"
+            let courtNum = "1"
+            // Run the function
+            resViewModel.makeRes(id: id, player: player, courtNum: courtNum)
+            
+            // Verify if the correct data was sent to Firestore
+            // For example, if your mock Firestore has a property to store the written data, check it here
+            
+            // Assert the mockFirestore method call with expected parameters
+            XCTAssertTrue(mockFirestore.didUpdateData) // Assuming you have a flag in the mock indicating if updateData was called
+            XCTAssertEqual(mockFirestore.updatedDocumentID, id)
+            XCTAssertEqual(mockFirestore.updatedData["reserved"] as? Bool, true)
+            XCTAssertEqual(mockFirestore.updatedData["player"] as? String, player)
+        }
+    }
+}
+    
+    
+    class ResConfirmationViewTests: XCTestCase {
+        
+        func testResConfirmationView_InitialState() {
+            let view = ResConfirmationView(name: "John Doe", courtNum: "1", time: "12:00 PM - 1:00 PM", date: "2023-11-01")
+            
+            // Write assertions to verify the initial state of the view.
+        }
+    }
+    
+    
+    class ResViewModelTests: XCTestCase {
+        var resViewModel: ResViewModel!
+        
+        override func setUp() {
+            super.setUp()
+            resViewModel = ResViewModel()
+            // Set up any initial conditions like database mocks, if needed
+        }
+        
+        override func tearDown() {
+            // Clean up after each test if needed
+            resViewModel = nil
+            super.tearDown()
+        }
+        
+        func testResViewModel_InitialState() {
+            let viewModel = ResViewModel()
+            
+            XCTAssertEqual(viewModel.reservations, [])
+        }
+        
+        func testResViewModel_FetchRes() {
+            let viewModel = ResViewModel()
+            let courtNum = "1"
+            
+            viewModel.fetchRes(courtNum: courtNum)
+            
+            // You can write assertions here to verify the behavior of the fetchRes method.
+            
+        }
+        
+        func testResViewModel_MakeRes() {
+            let viewModel = ResViewModel()
+            let id = "someId"
+            let player = "John Doe"
+            let courtNum = "1"
+            
+            viewModel.makeRes(id: id, player: player, courtNum: courtNum)
+            
+            // You can write assertions here to verify the behavior of the makeRes method.
+            func testMakeRes() {
+                // Create a XCTestExpectation to wait for the Firestore call to complete
+                let expectation = expectation(description: "Make reservation")
+
+                let id = "12345"
+                let player = "TestPlayer"
+                let courtNum = "1"
+
+                resViewModel.makeRes(id: id, player: player, courtNum: courtNum)
+                
+                
+                var resViewModel: ResViewModel!
+                var mockFirestore: MockFirestore! // Create a mock for Firestore
+                
+                func setUp() {
+                    super.setUp()
+                    mockFirestore = MockFirestore() // Initialize your mock Firestore
+                    resViewModel = ResViewModel()
+                    //resViewModel.db = mockFirestore // Inject the mock Firestore
+                    // Set up any initial conditions if needed
+                }
+                
+                func tearDown() {
+                    // Clean up after each test if needed
+                    mockFirestore = nil
+                    resViewModel = nil
+                    super.tearDown()
+                }
+                
+
+                // Simulate a delay to allow Firestore to complete the operation (adjust the time as needed)
+                DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                    // Assuming the completion block or some flag in your mock or testing double signals the completion of Firestore operation
+                    // Assert that Firestore updateData was called
+                    XCTAssertTrue(mockFirestore.didUpdateData)
+                    // Assert specific details like the document ID, updated data, etc.
+                    XCTAssertEqual(mockFirestore.updatedDocumentID, id)
+                    XCTAssertEqual(mockFirestore.updatedData["reserved"] as? Bool, true)
+                    XCTAssertEqual(mockFirestore.updatedData["player"] as? String, player)
+
+                    expectation.fulfill()
+                }
+
+                waitForExpectations(timeout: 5) // Adjust the timeout as per your needs
+            }
+
+        }
+        
+        func testFetchRes() {
+            let courtNumber = "1" // Set the court number for testing
+            
+            let expectation = XCTestExpectation(description: "Fetch reservations")
+            
+            resViewModel.fetchRes(courtNum: courtNumber)
+            
+            // Simulating an asynchronous call to wait for Firestore response
+            DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
+                // Assuming Firestore call would take at least 5 seconds, adjust the time as per your needs
+                XCTAssertFalse(self.resViewModel.reservations.isEmpty)
+                expectation.fulfill()
+            }
+            
+            wait(for: [expectation], timeout: 10) // Adjust the timeout as per your needs
+        }
+        
+        // Add similar XCTest methods for other functions like `makeRes`, `deleteRes`, `createRes`, etc.
+    }
+
 /*
  import XCTest
  import SwiftUI
