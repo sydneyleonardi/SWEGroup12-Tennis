@@ -10,10 +10,6 @@ import XCTest
 import FirebaseAuth
 
 
-// Testing Backend Capabilities
-// Testing Frontend Capabilities
-// Actually updating and editing database itself 
-
 class AuthManagerTests: XCTestCase {
 
     var authManager: AuthManager!
@@ -325,6 +321,222 @@ class UserManagerTests: XCTestCase {
     // Add more test cases for the remaining functions as needed.
 }
 
+@MainActor
+class LoginTests: XCTestCase {
+
+    let authManager = AuthManager.shared
+    let testTimeout: TimeInterval = 10 // Adjust the timeout as needed
+
+    override func setUp() {
+        // Set up any necessary configuration for testing.
+    }
+
+    override func tearDown() {
+        // Clean up after each test.
+    }
+
+    func testSuccessfulLogin() async {
+        // Provide valid test data for a successful login
+        let email = "auth.testing@vanderbilt.edu"
+        let password = "123456789"
+
+        do {
+            // Create a user for testing
+            let authDataResultModel = try await authManager.createUser(email: email, password: password)
+            XCTAssertNotNil(authDataResultModel.uid)
+
+            // Perform the login
+            let viewModel = LogInEmailViewModel()
+            viewModel.email = email
+            viewModel.password = password
+
+            do {
+                try await viewModel.signIn()
+
+                // Check if the user is signed in
+                let user = Auth.auth().currentUser
+                XCTAssertTrue(user?.isEmailVerified == true)
+
+                // Perform additional assertions as needed
+            } catch {
+                XCTFail("Successful login failed with error: \(error)")
+            }
+        } catch {
+            XCTFail("User creation failed with error: \(error)")
+        }
+    }
+
+    func testUnverifiedLogin() async {
+        // Provide valid test data for an unverified login
+        let email = "auth.testing@vanderbilt.edu"
+        let password = "123456789"
+
+        do {
+            // Create a user for testing, but don't verify the email
+            let authDataResultModel = try await authManager.createUser(email: email, password: password)
+            XCTAssertNotNil(authDataResultModel.uid)
+
+            // Perform the login
+            let viewModel = LogInEmailViewModel()
+            viewModel.email = email
+            viewModel.password = password
+
+            do {
+                try await viewModel.signIn()
+
+                // Since the user's email is not verified, this login should fail
+                XCTFail("Unverified login should have thrown a VerificationError")
+            } catch {
+                if let verificationError = error as? LogInEmailViewModel.VerificationError,
+                   case .notVerified = verificationError {
+                    // Expected error for unverified login
+                } else {
+                    XCTFail("Unexpected error: \(error)")
+                }
+            }
+        } catch {
+            XCTFail("User creation failed with error: \(error)")
+        }
+    }
+    func testInvalidEmail() async {
+        // Provide an invalid email for login
+        let email = "invalid_email"
+        let password = "123456789"
+
+        // Perform the login with an invalid email
+        let viewModel = LogInEmailViewModel()
+        viewModel.email = email
+        viewModel.password = password
+
+        do {
+            try await viewModel.signIn()
+
+            // This login should fail due to an invalid email
+            XCTFail("Login with an invalid email should have thrown an error")
+        } catch {
+            // Check if the error is due to an invalid email
+                XCTFail("Unexpected error: \(error)")
+            }
+    }
+
+    func testShortPassword() async {
+        // Provide a password that is too short for login
+        let email = "auth.testing@vanderbilt.edu"
+        let password = "12345" // Password length is less than 8
+
+        // Perform the login with a short password
+        let viewModel = LogInEmailViewModel()
+        viewModel.email = email
+        viewModel.password = password
+
+        do {
+            try await viewModel.signIn()
+
+            // This login should fail due to a short password
+            XCTFail("Login with a short password should have thrown an error")
+        } catch {
+            // Check if the error is due to a short password
+                XCTFail("Unexpected error: \(error)")
+        }
+    }
+    
+    func testEmptyEmailAndPassword() async {
+        // Provide empty email and password
+        let email = ""
+        let password = ""
+
+        // Create a view model and set email and password
+        let viewModel = LogInEmailViewModel()
+        viewModel.email = email
+        viewModel.password = password
+
+        do {
+            try await viewModel.signIn()
+            XCTFail("Login with empty email and password should have failed.")
+        } catch {
+            // Verify that an error message is displayed for empty fields
+            XCTFail("Email and/or password are invalid")
+        }
+    }
+    
+}
+
+@MainActor
+class SignUpViewTests: XCTestCase {
+    
+    func testFormIsValid() {
+        let viewModel = SignUpEmailViewModel()
+        
+        // Valid form input
+        viewModel.email = "valid_email@vanderbilt.edu"
+        viewModel.password = "validpassword"
+        viewModel.confirmPassword = "validpassword"
+        
+        let signUpView = SignUpView()
+        XCTAssertTrue(signUpView.formIsValid)
+        
+        // Invalid email format
+        viewModel.email = "invalidemail"
+        XCTAssertFalse(signUpView.formIsValid)
+        
+        // Short password
+        viewModel.email = "valid_email@vanderbilt.edu"
+        viewModel.password = "short"
+        XCTAssertFalse(signUpView.formIsValid)
+        
+        // Mismatched passwords
+        viewModel.password = "validpassword"
+        viewModel.confirmPassword = "mismatchedpassword"
+        XCTAssertFalse(signUpView.formIsValid)
+        
+        // Empty fields
+        viewModel.password = ""
+        viewModel.confirmPassword = ""
+        XCTAssertFalse(signUpView.formIsValid)
+    }
+}
+
+@MainActor
+class SignUpEmailViewModelTests: XCTestCase {
+    
+    func testSignUpWithValidCredentials() async {
+        let viewModel = SignUpEmailViewModel()
+        
+        viewModel.email = "valid_email@vanderbilt.edu"
+        viewModel.password = "validpassword"
+        viewModel.confirmPassword = "validpassword"
+        
+        do {
+            try await viewModel.signUp()
+            
+            // Add appropriate assertions to verify a successful signup
+        } catch {
+            XCTFail("Failed to sign up with valid credentials: \(error)")
+        }
+    }
+    
+    func testSignUpWithUsedEmail() async {
+        let viewModel = SignUpEmailViewModel()
+        
+        viewModel.email = "used_email@vanderbilt.edu"
+        viewModel.password = "validpassword"
+        viewModel.confirmPassword = "validpassword"
+        
+        do {
+            try await viewModel.signUp()
+            
+            // Add appropriate assertions to verify an email already in use error
+        } catch AuthErrorCode.emailAlreadyInUse {
+            // This is expected
+        } catch {
+            XCTFail("Unexpected error during signup: \(error)")
+        }
+    }
+}
+
+
+
+
 class MockFirestore {
     var didUpdateData = false
     var updatedDocumentID: String = ""
@@ -390,46 +602,48 @@ class CalendarResViewTests: XCTestCase {
 }
 
 
-class CalendarResViewTests2: XCTestCase {
-    var app: XCUIApplication!
+
+class CalendarResViewTests3: XCTestCase {
+
+    var calendarResView: CalendarResView!
+    var resViewModel: ResViewModel!
 
     override func setUp() {
-        continueAfterFailure = false
-        app = XCUIApplication()
-        app.launch()
+        super.setUp()
+
+        calendarResView = CalendarResView()
+        resViewModel = ResViewModel()
+        calendarResView.resVM = resViewModel
     }
 
-    func testViewInitialState() {
-        let calendarLabel = app.staticTexts["Calendar"]
-        XCTAssertTrue(calendarLabel.exists)
+    override func tearDown() {
+        calendarResView = nil
+        resViewModel = nil
 
-        let defaultSelectedDate = app.datePickers["Select Date"]
-        XCTAssertTrue(defaultSelectedDate.exists)
-
-        let court1Button = app.buttons["Court 1"]
-        XCTAssertTrue(court1Button.exists)
+        super.tearDown()
     }
 
-    func testNavigateToResTimeView() {
-        let court1Button = app.buttons["Court 1"]
-        court1Button.tap()
-
-        // Simulate interactions and assert expected elements in ResTimeView
-        let confirmationButton = app.buttons["Confirm Reservation"]
-        XCTAssertTrue(confirmationButton.exists)
+    func testInitialCourtNumber() {
+        XCTAssertEqual(calendarResView.courtNum, "1")
     }
 
-    func testNavigateToDeleteResView() {
-        let court1Button = app.buttons["Court 1"]
-        court1Button.tap()
+    func testSelectedDate() {
+        let today = Date()
+        XCTAssertEqual(calendarResView.selectedDate.timeIntervalSince1970, today.timeIntervalSince1970, accuracy: 1.0)
+    }
 
-        // Navigate to DeleteResView
-        let confirmationButton = app.buttons["Confirm Reservation"]
-        confirmationButton.tap()
+    func testChangeAvailableReservations() {
+        calendarResView.availableRes = false
+        calendarResView.yourResExist = true
+        XCTAssertEqual(calendarResView.availableRes, false)
+        XCTAssertEqual(calendarResView.yourResExist, true)
+    }
 
-        // Simulate interactions and assert expected elements in DeleteResView
-        let deleteButton = app.buttons["Delete Reservation"]
-        XCTAssertTrue(deleteButton.exists)
+    // Test fetchRes method from ResViewModel
+
+    func testFetchRes() {
+        calendarResView.resVM.fetchRes(courtNum: "1")
+        XCTAssertEqual(calendarResView.resVM.reservations.count, 0)
     }
 }
 
@@ -536,16 +750,165 @@ class ResTimeViewTests: XCTestCase {
             viewModel.fetchRes(courtNum: courtNum)
             
             // You can write assertions here to verify the behavior of the fetchRes method.
+            func testFetchRes() {
+                    let courtNumber = "1"
+                    
+                    // Initially, the reservations array should be empty
+                    XCTAssertTrue(resViewModel.reservations.isEmpty)
+
+                    // Call the fetchRes method
+                    resViewModel.fetchRes(courtNum: courtNumber)
+
+                    // After fetching reservations, the reservations array should not be empty
+                    XCTAssertFalse(resViewModel.reservations.isEmpty)
+
+                    // Assuming you're fetching reservations for court 1, check if the fetched reservations are for the correct court
+                    let fetchedReservationsForCourt1 = resViewModel.reservations.filter { $0.court == courtNumber }
+                    XCTAssertEqual(fetchedReservationsForCourt1.count, 2) // Assuming two mock reservations were added
+
+                    // You can further assert other properties or conditions of the fetched reservations
+                    // For instance, check if a reservation with a specific player name exists
+                    let reservedByJohnDoe = resViewModel.reservations.contains { $0.player == "John Doe" }
+                    XCTAssertTrue(reservedByJohnDoe)
+                }
+            
+            func testFetchResProperties() {
+                let courtNumber = "1"
+                let expectedReservationsCount = 1
+
+                // Initially, the reservations array should be empty
+                XCTAssertTrue(resViewModel.reservations.isEmpty)
+
+                // Call the fetchRes method
+                resViewModel.fetchRes(courtNum: courtNumber)
+
+                // After fetching reservations, the reservations array should not be empty
+                XCTAssertFalse(resViewModel.reservations.isEmpty)
+
+                // Check if all the fetched reservations belong to the requested court
+                XCTAssertTrue(resViewModel.reservations.allSatisfy { $0.court == courtNumber })
+
+                // Ensure that only reservations for the requested court are fetched
+                let otherCourtReservations = resViewModel.reservations.filter { $0.court != courtNumber }
+                XCTAssertTrue(otherCourtReservations.isEmpty)
+
+                // Verify the count of fetched reservations
+                XCTAssertEqual(resViewModel.reservations.count, expectedReservationsCount)
+                
+                // Ensure the 'reserved' property for each reservation is accurate
+                XCTAssertTrue(resViewModel.reservations.allSatisfy { $0.reserved == true || $0.reserved == false })
+
+                // Ensure that if a reservation is marked as reserved, the player property is not empty
+                let reservedWithEmptyPlayer = resViewModel.reservations.filter { $0.reserved && $0.player.isEmpty }
+                XCTAssertTrue(reservedWithEmptyPlayer.isEmpty)
+            }
+            
+            func testFetchResSorting() {
+                let courtNumber = "1"
+
+                // Initially, the reservations array should be empty
+                XCTAssertTrue(resViewModel.reservations.isEmpty)
+
+                // Call the fetchRes method
+                resViewModel.fetchRes(courtNum: courtNumber)
+
+                // After fetching reservations, the reservations array should not be empty
+                XCTAssertFalse(resViewModel.reservations.isEmpty)
+
+                // Ensure the fetched reservations are in sorted order by start time
+                let sortedByStart = resViewModel.reservations.sorted { $0.start < $1.start }
+                XCTAssertEqual(resViewModel.reservations, sortedByStart)
+
+                // Ensure that the fetched reservations have valid start and end times
+                let validStartEndTimes = resViewModel.reservations.allSatisfy {
+                    $0.start < $0.end
+                }
+                XCTAssertTrue(validStartEndTimes)
+
+                // Verify that the fetched reservations are for dates after the current date
+                let currentDate = Date()
+                let datesInPast = resViewModel.reservations.filter {
+                    $0.date < currentDate.formatted(date: .numeric, time: .omitted)
+                }
+                XCTAssertTrue(datesInPast.isEmpty)
+
+                // Test the behavior when trying to fetch reservations for an invalid court number
+                resViewModel.fetchRes(courtNum: "5")
+                // The fetched reservations should still be empty for an invalid court number
+                XCTAssertTrue(resViewModel.reservations.isEmpty)
+            }
+            
+            func testFetchResValidity() {
+                let courtNumber = "1"
+
+                // Initially, the reservations array should be empty
+                XCTAssertTrue(resViewModel.reservations.isEmpty)
+
+                // Call the fetchRes method
+                resViewModel.fetchRes(courtNum: courtNumber)
+
+                // After fetching reservations, the reservations array should not be empty
+                XCTAssertFalse(resViewModel.reservations.isEmpty)
+
+                // Test if the fetched reservations contain the expected court number
+                let validCourtNumber = resViewModel.reservations.allSatisfy { $0.court == courtNumber }
+                XCTAssertTrue(validCourtNumber)
+
+                // Test if fetched reservations do not contain other court numbers
+                let invalidCourtNumber = resViewModel.reservations.first { $0.court != courtNumber }
+                XCTAssertNil(invalidCourtNumber)
+
+                // Ensure that the fetched reservations do not exceed the specified limit
+                let fetchLimit = 20 // Assuming a limit of 20 reservations
+                XCTAssertLessThanOrEqual(resViewModel.reservations.count, fetchLimit)
+
+                // Verify that the fetched reservations are associated with the current user
+//                let currentUserReservations = resViewModel.reservations.allSatisfy { $0.player == resViewModel.currentUser }
+//                XCTAssertTrue(currentUserReservations)
+            }
+            
+            func testFetchResValidity2() {
+                // ...
+
+                // Ensure that the fetched reservations are for the selected court only
+//                for reservation in resViewModel.reservations {
+//                    if resViewModel.currentCourtNum != nil {
+//                        XCTAssertEqual(reservation.court, resViewModel.currentCourtNum)
+//                    }
+//                }
+
+                // Test if the fetched reservations are not empty
+                XCTAssertFalse(resViewModel.reservations.isEmpty)
+
+                // Assert that the fetched reservations have valid date formats
+                let dateFormatter = DateFormatter()
+                dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+                for reservation in resViewModel.reservations {
+                    XCTAssertNotNil(dateFormatter.date(from: reservation.start))
+                    XCTAssertNotNil(dateFormatter.date(from: reservation.end))
+                }
+
+                // Check that the fetched reservations array is within a reasonable size range
+                XCTAssertGreaterThan(resViewModel.reservations.count, 0)
+                XCTAssertLessThanOrEqual(resViewModel.reservations.count, 100)
+
+                // Verify that fetched reservations are not nil
+                XCTAssertNotNil(resViewModel.reservations)
+
+                // Verify that the fetched reservations aren't already marked as reserved
+                let alreadyReserved = resViewModel.reservations.allSatisfy { $0.reserved }
+                XCTAssertFalse(alreadyReserved)
+            }
             
         }
         
         func testResViewModel_MakeRes() {
-            let viewModel = ResViewModel()
+            let resViewModel = ResViewModel()
             let id = "someId"
             let player = "John Doe"
             let courtNum = "1"
             
-            viewModel.makeRes(id: id, player: player, courtNum: courtNum)
+            resViewModel.makeRes(id: id, player: player, courtNum: courtNum)
             
             // You can write assertions here to verify the behavior of the makeRes method.
             func testMakeRes() {
@@ -614,7 +977,259 @@ class ResTimeViewTests: XCTestCase {
         }
         
         // Add similar XCTest methods for other functions like `makeRes`, `deleteRes`, `createRes`, etc.
+
+
+
+//            func testDeleteRes() {
+//                // Initial setup or necessary data loading
+//
+//                // Add some reservation to be deleted
+//                let testReservation = Reservation(id: "testID", day: "2023-12-01 08:00:00", month: "Test Player", year: true, start: "1:00pm", end: "2:00pm")
+//                resViewModel.reservations = [testReservation]
+//
+//                let initialReservationsCount = resViewModel.reservations.count
+//
+//                // Attempt to delete the reservation
+//                resViewModel.deleteRes(id: "testID", courtNum: "1")
+//
+//                // After deletion, verify that the reservation was removed
+//                let remainingReservationsCount = resViewModel.reservations.count
+//
+//                XCTAssertEqual(remainingReservationsCount, initialReservationsCount - 1)
+//            }
+        
+            func testMakeRes() {
+                // Initial setup or necessary data loading
+
+                let initialReservationsCount = resViewModel.reservations.count
+
+                // Create a reservation
+                resViewModel.makeRes(id: "testID", player: "Test Player", courtNum: "1")
+
+                // After making the reservation, verify that the count has increased by one
+                let updatedReservationsCount = resViewModel.reservations.count
+
+                XCTAssertEqual(updatedReservationsCount, initialReservationsCount + 1)
+            }
+        
+        
+        func testMakeResValidity() {
+            // Initial setup
+
+            let player = "Test Player"
+            let courtNum = "1"
+            let id = "testID"
+
+            resViewModel.makeRes(id: id, player: player, courtNum: courtNum)
+
+            // Retrieve the last added reservation
+            guard let newReservation = resViewModel.reservations.last else {
+                XCTFail("Reservation not added")
+                return
+            }
+
+            XCTAssertEqual(newReservation.player, player)
+            //XCTAssertEqual(newReservation.courtNum, courtNum)
+            XCTAssertEqual(newReservation.id, id)
+            // Add assertions for other attributes you expect in a new reservation
+        }
+        
+        func testUserReservationListUpdated() {
+            let player = "User123"
+            let courtNum = "2"
+            let id = "testID2"
+
+            // Assuming the initial user's reservations count is known
+            let initialUserReservationsCount = resViewModel.reservations.filter { $0.player == player }.count
+
+            resViewModel.makeRes(id: id, player: player, courtNum: courtNum)
+
+            let updatedUserReservationsCount = resViewModel.reservations.filter { $0.player == player }.count
+
+            XCTAssertEqual(updatedUserReservationsCount, initialUserReservationsCount + 1)
+        }
+
+        func testAddingReservations() {
+            let initialReservationsCount = resViewModel.reservations.count
+
+            resViewModel.makeRes(id: "uniqueID", player: "Test Player", courtNum: "3")
+
+            XCTAssertEqual(resViewModel.reservations.count, initialReservationsCount + 1)
+        }
+
+        func testAddedReservationExists() {
+            let id = "uniqueID"
+            resViewModel.makeRes(id: id, player: "Tester", courtNum: "2")
+
+            guard let addedReservation = resViewModel.reservations.first(where: { $0.id == id }) else {
+                XCTFail("Reservation with ID \(id) was not added")
+                return
+            }
+            
+            XCTAssertEqual(addedReservation.player, "Tester")
+            //XCTAssertEqual(addedReservation.courtNum, "2")
+            // Add assertions for other attributes
+        }
+
+//        func testReservationsState() {
+//
+//            resViewModel.makeRes(id: "uniqueID2", player: "Tester", courtNum: "4")
+//
+//            let newReservations = resViewModel.reservations.filter { $0.player == "Tester" }
+//            let reservedCourts = Set(newReservations.map { $0.courtNum })
+//
+//            XCTAssertTrue(reservedCourts.contains("Tester"))
+//            // Add more assertions based on your reservation state logic
+//        }
+
+
+        
+
     }
+
+class ResViewModelTests2: XCTestCase {
+    var resViewModel: ResViewModel!
+
+    override func setUp() {
+        super.setUp()
+        resViewModel = ResViewModel()
+    }
+
+    override func tearDown() {
+        resViewModel = nil
+        super.tearDown()
+    }
+
+    func testDeleteRes_WithValidID() {
+        // Given
+        let idToDelete = "1234" // Example ID
+        let courtNumber = "2" // Example Court Number
+
+        // When
+        resViewModel.deleteRes(id: idToDelete, courtNum: courtNumber)
+
+        // Then
+        // Add assertions to check the result of the deletion or changes made.
+        // For instance, check a specific state, array modification, or any side effects.
+        // XCTAssertEqual or XCTAssertTrue can be used to check these effects.
+    }
+
+    func testDeleteRes_WithInvalidID() {
+        // Given
+        let idToDelete = "9999" // Assuming this ID doesn't exist
+        let courtNumber = "3"
+
+        // When
+        resViewModel.deleteRes(id: idToDelete, courtNum: courtNumber)
+
+        // Then
+        // Validate that with an invalid ID, the method handles it appropriately.
+        // For example, by not making any changes or returning an error state.
+        // Use XCTAssertNil or similar assertions to verify the behavior.
+    }
+}
+
+class MatchesListViewTests: XCTestCase {
+    
+    // Mock data for testing
+    let testMatches: [Match] = [
+        Match(userID: "1", name: "John", skillLevel: "Beginner", gender: "Male", type: "Singles", time: [0, 1, 0, 0, 1,0,0,0,0,0,0,0,0,0,0]),
+        Match(userID: "2", name: "Jane", skillLevel: "Club", gender: "Female", type: "Doubles", time: [1, 0, 1, 0, 1,0,0,0,0,0,0,0,0,0,0]),
+        Match(userID: "3", name: "Alex", skillLevel: "College", gender: "Non-Binary", type: "Singles", time: [1, 1, 0, 1,0,0,0,0,0,0,0,0,0,0,0])
+    ]
+    
+    func testFetchData() {
+        XCTAssertEqual(testMatches, [
+            Match(userID: "1", name: "John", skillLevel: "Beginner", gender: "Male", type: "Singles", time: [0, 1, 0, 0, 1,0,0,0,0,0,0,0,0,0,0]),
+            Match(userID: "2", name: "Jane", skillLevel: "Club", gender: "Female", type: "Doubles", time: [1, 0, 1, 0, 1,0,0,0,0,0,0,0,0,0,0]),
+            Match(userID: "3", name: "Alex", skillLevel: "College", gender: "Non-Binary", type: "Singles", time: [1, 1, 0, 1,0,0,0,0,0,0,0,0,0,0,0])
+        ], "Match Equality Operator not working as expected")
+        
+        let matchesViewModel = MatchesViewModel()
+        var explicitVariable: Match?
+        
+        
+        matchesViewModel.fetchData()
+        //var explicitVariable: Match = matchesViewModel.fetchData(completion: ([Match]) -> Void)
+        // Fetch reservations for court 1
+        //let match1 = matchesViewModel.fetchData()
+        //print("!!!!!!!!!!!!!!!!!!!!!!!!!!!\(match1.name)")
+                        // After fetch, the reservations array should not be empty
+        //XCTAssertFalse(matchesViewModel.users.isEmpty)
+    }
+    
+    func testFilterMatches() {
+        let expectation = XCTestExpectation(description: "Filter matches based on criteria")
+        
+        Task {
+            do {
+                let matchesViewModel = MatchesViewModel()
+                matchesViewModel.matches = testMatches
+                //Test Automatic Filtering
+                //Automatic Time Availability Filtering
+                var currUser = "CurrentUser"
+                var currUserTime = [0,1,0,0,0,0,0,0,0,0,0,0,0,0,0]
+                var filteredMatches = matchesViewModel.matches
+                filteredMatches = matchesViewModel.matches.filter { match in
+                    matchesViewModel.filterMatches(match: match, sendFilter: Match(userID: "", name: "", skillLevel: "", gender: "", type: "", time: []), currUser: "", currTime: currUserTime)
+                }
+                XCTAssertEqual(filteredMatches.count, 2, "Filtering by availibility did not work as expected")
+                
+                currUserTime = [1,1,0,0,0,0,0,0,0,0,0,0,0,0,0]
+                filteredMatches = matchesViewModel.matches
+                filteredMatches = matchesViewModel.matches.filter { match in
+                    matchesViewModel.filterMatches(match: match, sendFilter: Match(userID: "", name: "", skillLevel: "", gender: "", type: "", time: []), currUser: "", currTime: currUserTime)
+                }
+                XCTAssertEqual(filteredMatches.count, 3, "Filtering by availibility did not work as expected")
+                
+                currUserTime = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+                filteredMatches = matchesViewModel.matches
+                filteredMatches = matchesViewModel.matches.filter { match in
+                    matchesViewModel.filterMatches(match: match, sendFilter: Match(userID: "", name: "", skillLevel: "", gender: "", type: "", time: []), currUser: "", currTime: currUserTime)
+                }
+                XCTAssertEqual(filteredMatches.count, 0, "Filtering by availibility did not work as expected")
+                
+                
+                //Automatic Personal Account Filtering
+                currUser = "Jane"
+                currUserTime = [1,1,0,0,0,0,0,0,0,0,0,0,0,0,0]
+                filteredMatches = matchesViewModel.matches
+                filteredMatches = matchesViewModel.matches.filter { match in
+                    matchesViewModel.filterMatches(match: match, sendFilter: Match(userID: "", name: currUser, skillLevel: "", gender: "", type: "", time: []), currUser: currUser, currTime: currUserTime)
+                }
+                XCTAssertEqual(filteredMatches.count, 2, "Filtering by personal name did not work as expected")
+                
+                // Test filtering by skill level
+                filteredMatches = matchesViewModel.matches.filter { match in
+                    matchesViewModel.filterMatches(match: match, sendFilter: Match(userID: "", name: "", skillLevel: "Club", gender: "", type: "", time: []), currUser: "", currTime: [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1])
+                }
+                print("Filtered matches: \(filteredMatches)")
+                XCTAssertEqual(filteredMatches.count, 1, "Filtering matches by skill level did not work as expected")
+                XCTAssertEqual(filteredMatches.first?.name, "Jane", "Filtered match has unexpected name")
+                
+                // Test filtering by gender
+                filteredMatches = matchesViewModel.matches.filter { match in
+                    matchesViewModel.filterMatches(match: match, sendFilter: Match(userID: "", name: "", skillLevel: "", gender: "Female", type: "", time: []), currUser: "", currTime: [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1])
+                }
+                XCTAssertEqual(filteredMatches.count, 1, "Filtering matches by gender did not work as expected")
+                XCTAssertEqual(filteredMatches.first?.name, "Jane", "Filtered match has unexpected name")
+                
+                // Test filtering by play type
+                filteredMatches = matchesViewModel.matches.filter { match in
+                    matchesViewModel.filterMatches(match: match, sendFilter: Match(userID: "", name: "", skillLevel: "", gender: "", type: "Singles", time: []), currUser: "", currTime: [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1])
+                }
+                XCTAssertEqual(filteredMatches.count, 2, "Filtering matches by play type did not work as expected")
+                
+                expectation.fulfill()
+            } catch {
+                XCTFail("Failed to filter matches: \(error.localizedDescription)")
+            }
+        }
+        
+        wait(for: [expectation], timeout: 5.0)
+    }
+    
+}
 
 /*
  import XCTest

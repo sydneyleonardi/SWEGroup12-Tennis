@@ -97,8 +97,8 @@ struct LogInView: View {
                 .disabled(!formIsValid)
                 .opacity(formIsValid ? 1.0: 0.5)
                 .alert(isPresented: $errorAlert) {
-                    Alert(title: Text(errorMessage),
-                          message: Text("Email and/or password are invalid"),
+                    Alert(title: Text("Unable to sign in"),
+                          message: Text(errorMessage),
                           dismissButton: .default(Text("OK")) {
                         errorAlert = false
                         viewModel.email = ""

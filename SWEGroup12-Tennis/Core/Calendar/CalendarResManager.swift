@@ -83,6 +83,7 @@ class ResViewModel: ObservableObject {
         }
     }
     
+    /*
     //block players from scheduling more than one res at a time
     func createRes(courtNum: String, date: String){
         let path = "courtReservations/court" + courtNum + "/court" + courtNum + "Reservations"
@@ -162,7 +163,7 @@ class ResViewModel: ObservableObject {
             }
         }
     }
-    
+  */
 }
 
 

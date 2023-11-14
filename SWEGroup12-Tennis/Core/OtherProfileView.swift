@@ -1,12 +1,9 @@
 //
-//  ProfileView.swift
+//  OtherProfileView.swift
 //  SWEGroup12-Tennis
 //
-//  Created by Sydney Leonardi on 10/15/23.
+//  Created by Sydney Leonardi on 11/14/23.
 //
-
-// TO DO
-// Figure out how to showcase the availability but for another day
 
 import SwiftUI
 import SDWebImageSwiftUI
