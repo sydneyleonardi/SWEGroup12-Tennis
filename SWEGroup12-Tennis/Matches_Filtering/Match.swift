@@ -10,9 +10,11 @@ import Foundation
 //need to add more for timing preferences
 struct Match: Identifiable {
     var id: String = UUID().uuidString
+    var userID: String
     var name: String
     var skillLevel: String
-    var email: String
+    //var email: String
     var gender: String
     var type: String
+    var time: [Int]
 }

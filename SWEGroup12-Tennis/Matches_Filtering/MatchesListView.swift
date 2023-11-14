@@ -5,77 +5,120 @@
 //  Created by Kathleen Katchis on 10/15/23.
 //
 
+//current goals
+//filter for current user (done)
+//filter for current user availibility - automatic -- ?
+//bug with voeralpping nav bar when viewing a users profile
+
+
+//current goals
+//reset filtering button
+//uploading data for time and dates
+//filtering on time and date
+//better filtering logic
+//error handling for invalid profiles
+//make advanced filter button more visible (darker color)
+
 import SwiftUI
 
-let sendFilter = Match(name:"", skillLevel:"", email:"", gender:"", type:"")
+let sendFilter = Match(userID: "", name:"", skillLevel:"", gender:"", type:"", time:[])
 struct MatchesListView: View{
     
     //var matches = testData
-    
-    let sendFilter: Match
+    @State private var sendFilter = Match(userID: "", name:"", skillLevel:"", gender:"", type:"", time:[])
+    //let sendFilter: Match
     @ObservedObject private var viewModel = MatchesViewModel()
     @Binding var showSignIn: Bool
-    var body: some View {
+    @State private var showFilterOptions = false
+    
+    @ObservedObject var profileVM = ProfileViewModel()
+    
+    var curUser: DBUser?
+    //check two time availibilty arrays for any available overlap
+    /*func arraysHaveCommonTime(currTime: [Int], matchTime: [Int]) -> Bool {
+        for (curr, match) in zip(currTime, matchTime) {
+            if curr == 1 && match == 1 {
+                return true
+            }
+        }
+        return false
+    }
+    //automatically filter matches according to shared time availability
+    //automatically remove the current user from potential matches
+    //manually apply filter preferences from top bar
+    func filterMatches(match: Match, sendFilter: Match, currUser: String, currTime: [Int]) -> Bool {
+        return (sendFilter.gender.isEmpty || match.gender == sendFilter.gender) &&
+               (sendFilter.skillLevel.isEmpty || match.skillLevel == sendFilter.skillLevel) &&
+               (sendFilter.type.isEmpty || match.type == sendFilter.type) &&
+               (currUser != match.name) &&
+               arraysHaveCommonTime(currTime: currTime, matchTime: match.time)
+    }*/
+    
+    var body: some View{
+        let currUser = profileVM.user?.name ?? ""
+        
         NavigationView {
-            //model to view all matched pulled from DB
-            //filter logic -- needs ot be further fleshed out
-            List(viewModel.matches) { i in
-                if ((sendFilter.gender == "") || (i.gender == sendFilter.gender || i.type == sendFilter.type || i.skillLevel == sendFilter.skillLevel)) {
-                    //navigate to profile view
-                    //updates still need to be made to view specific profile selected
-                    NavigationLink(destination: ProfileView(showSignIn: $showSignIn)) {
-                        HStack() {
-                            VStack(alignment: .leading) {
-                                Text(i.name)
-                                    .font(.headline)
-                                Text(i.gender)
-                                    .font(.subheadline)
-                                Text("Skill Level: " + i.skillLevel)
-                                    .font(.subheadline)
-                                Text("Type: " + i.type)
-                                    .font(.subheadline)
-                            }
-                            Spacer()
-                            VStack(alignment: .center) {
-                                Text("Quick Match")
-                                    .frame(width: 150, height: 40)
-                                    .background(Color.accentColor)
-                                    .cornerRadius(20)
-                                    .foregroundColor(.black)
-                                    .onTapGesture {
-                                        viewModel.alert = true
-                                    }
-                                    .alert(isPresented: $viewModel.alert) {
-                                        Alert(title: Text("Match Request Sent!"),
-                                              message: Text("Pending Approval"),
-                                              dismissButton: .default(Text("OK")) {
-                                                  viewModel.alert = false
-                                              })
-                                    }
+            VStack{
+                Button("Show Filters") {
+                    self.showFilterOptions.toggle()
+                }
+                if showFilterOptions {
+                    FilterOptionsMenuView(showFilterOptions: $showFilterOptions, sendFilter: $sendFilter, applyFilters: {
+                        print("Updated sendFilter attributes: \(sendFilter.skillLevel)")
+                        print("This is the current user\(currUser)")
+                    })
+                }
+                //model to view all potential partners pulled from DB
+                List(viewModel.matches) { i in
+                    let currTime = profileVM.user?.datesSelected ?? []
+                    if viewModel.filterMatches(match: i, sendFilter: sendFilter, currUser: currUser, currTime: currTime) {
+                        NavigationLink(destination: OtherProfileView(curUser: .constant(i.userID) , showSignIn: $showSignIn)) {
+                            HStack() {
+                                VStack(alignment: .leading) {
+                                    Text(i.name)
+                                        .font(.headline)
+                                    Text(i.gender)
+                                        .font(.subheadline)
+                                    Text("Skill Level: " + i.skillLevel)
+                                        .font(.subheadline)
+                                    Text("Type: " + i.type)
+                                        .font(.subheadline)
+                                }
+                                Spacer()
+                                VStack(alignment: .center) {
+                                    Text("Quick Match")
+                                        .frame(width: 150, height: 40)
+                                        .background(Color.accentColor)
+                                        .cornerRadius(20)
+                                        .foregroundColor(.black)
+                                        .onTapGesture {
+                                            viewModel.alert = true
+                                        }
+                                        .alert(isPresented: $viewModel.alert) {
+                                            Alert(title: Text("Match Request Sent!"),
+                                                  message: Text("Pending Approval"),
+                                                  dismissButton: .default(Text("OK")) {
+                                                viewModel.alert = false
+                                            })
+                                        }
+                                }
                             }
                         }
                     }
                 }
-            }
-            //navigate to advanced filter screen
-            .navigationBarItems(leading:
-                                    NavigationLink(destination: FilterView(showSignIn: $showSignIn)) {
-                    Text("Advanced Filter")
-                    .foregroundColor(Color.accentColor)
-                        .frame(width: 175, height: 20)
-                        .background()
-                        .cornerRadius(15)
+                .listStyle(PlainListStyle())
+                .navigationBarTitle("Potential Players")
+                .onAppear() {
+                    self.viewModel.fetchData()
+                    Task{
+                        try? await profileVM.loadCurrentUser()
+                    }
                 }
-                                )
-            .navigationBarTitle("Potential Matches")
-            .onAppear() {
-                self.viewModel.fetchData()
             }
         }
     }
 }
 
 #Preview {
-    MatchesListView(sendFilter: sendFilter, showSignIn: .constant(false))
+    MatchesListView(showSignIn: .constant(false))
 }
-

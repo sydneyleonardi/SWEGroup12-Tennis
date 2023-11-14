@@ -4,7 +4,7 @@
 //
 //  Created by Kathleen Katchis on 10/12/23.
 //
-
+/*
 import SwiftUI
 
 //syntax for all of the select buttons on the filter page
@@ -29,3 +29,4 @@ struct SelectButtonFilter: View {
         SelectButtonFilter(isSelected:.constant(false) ,color: CustomColor.myColor)
     }
 }
+*/

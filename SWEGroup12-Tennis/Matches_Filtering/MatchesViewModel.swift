@@ -14,7 +14,7 @@ class MatchesViewModel: ObservableObject {
     @Published var alert = false
     
     //function connects to firestore and gets changes to books
-    private var db = Firestore.firestore()
+    var db = Firestore.firestore()
     
     func fetchData(){
         //pull all users
@@ -26,19 +26,35 @@ class MatchesViewModel: ObservableObject {
             self.matches = documents.map { (QueryDocumentSnapshot) in
             let data = QueryDocumentSnapshot.data()
                 //verify correct data is pulled for each user
-            if let name = data["name"] as? String,
+            if let userID = data["id"] as? String,
+                let name = data["name"] as? String,
                let skillLevel = data["skillLevel"] as? String,
-               let email = data["email"] as? String,
                 let gender = data["gender"] as? String,
-                let type = data["type"] as? String{
-                let match = Match(name: name,  skillLevel: skillLevel, email:email, gender:gender, type:type)
+                let type = data["type"] as? String,
+               let time = data["datesSelected"] as? [Int]{
+                let match = Match(userID: userID , name: name, skillLevel: skillLevel, gender:gender, type:type, time:time)
                 return match
             }else{
                 //send match data to MatchedListView
-                return Match(name: "N/A", skillLevel: "N/A", email:"N/A", gender:"N/A", type:"N/A")
+                return Match(userID:"N/A", name: "N/A", skillLevel: "N/A", gender:"N/A", type:"N/A", time: [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0])
             }
             }
         }
+    }
+    func filterMatches(match: Match, sendFilter: Match, currUser: String, currTime: [Int]) -> Bool {
+        return (sendFilter.gender.isEmpty || match.gender == sendFilter.gender) &&
+               (sendFilter.skillLevel.isEmpty || match.skillLevel == sendFilter.skillLevel) &&
+               (sendFilter.type.isEmpty || match.type == sendFilter.type) &&
+               (currUser != match.name) &&
+               arraysHaveCommonTime(currTime: currTime, matchTime: match.time)
+    }
+    func arraysHaveCommonTime(currTime: [Int], matchTime: [Int]) -> Bool {
+        for (curr, match) in zip(currTime, matchTime) {
+            if curr == 1 && match == 1 {
+                return true
+            }
+        }
+        return false
     }
     
 }

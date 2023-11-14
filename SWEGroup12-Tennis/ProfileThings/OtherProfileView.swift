@@ -13,7 +13,14 @@ import SwiftUI
 @MainActor
 final class OtherProfileViewModel: ObservableObject
 {
+    enum UserError: Error {
+        case nilUserID
+    }
     @Published private(set) var user: DBUser? = nil
+    init(userID: String) {
+        self.userID = userID
+    }
+    private var userID: String
     @Published var isSelected = false
     @Published var isSelected2 = false
     @Published var isSelected3 = false
@@ -36,9 +43,25 @@ final class OtherProfileViewModel: ObservableObject
     @Published var isSelected20 = false
     
     func loadCurrentUser() async throws {
-        let authDataResult = try AuthManager.shared.fetchUser()
-        self.user = try await UserManager.shared.getUser(userId: authDataResult.uid)
+        if self.userID.isEmpty {
+               throw UserError.nilUserID // Assuming UserError is your custom error type
+           }
+           
+           print("User ID:", self.userID)
+           self.user = try await UserManager.shared.getUser(userId: self.userID)
+        //let authDataResult = try
+        //AuthManager.shared.fetchUser()
+        //UserManager.shared.getUser(userId: userID)
+        //self.user = try await UserManager.shared.getUser(userId: authDataResult.uid)
+        /*guard let userID = self.userID else {
+            throw UserError.nilUserID // Assuming UserError is your custom error type
+        }
         
+        print("User ID:", userID)
+        self.user = try await UserManager.shared.getUser(userId: userID)
+        //print("User ID:", userID)
+        //self.user = try await UserManager.shared.getUser(userId: self.userID)
+        */
         // logic for skill level
         if(user?.skillLevel == "Beginner"){
             isSelected = true
@@ -68,16 +91,36 @@ final class OtherProfileViewModel: ObservableObject
         }
     }
     
+
+    
+}
+struct Profile {
+    var userId: String // Unique identifier for each profile
+    var name: String
+    var bio: String
+    // Other profile-related properties
 }
 
 struct OtherProfileView: View {
-    
-    @StateObject private var viewModel = ProfileViewModel()
+    @Binding var curUser: String
     @Binding var showSignIn: Bool
-    
+    @ObservedObject private var viewModel: OtherProfileViewModel
+
+    init(curUser: Binding<String>, showSignIn: Binding<Bool>) {
+        _curUser = curUser
+        _showSignIn = showSignIn
+        _viewModel = ObservedObject(wrappedValue: OtherProfileViewModel(userID: curUser.wrappedValue))
+    }
+    //create as an environment object not a state object
+    //@Binding var curUser: String
+    //@ObservedObject private var viewModel = OtherProfileViewModel(userID: curUser)
+    //@Binding var curUser: String
+    //@Binding var showSignIn: Bool
     
     var body: some View {
         let user = viewModel.user
+        //getUser(userId: curUser)
+        //self.user = try await UserManager.shared.getUser(userId: curUser)
         
         Image("Logo")
             .resizable()
@@ -100,11 +143,11 @@ struct OtherProfileView: View {
                 .font(.subheadline)
                 .padding(.bottom, 10)
             
-            NavigationLink{
+            NavigationLink{/*ChatLogView(chatUser: curUser)*/
                 
             }label:
             {
-                Text("Edit Profile")
+                Text("Match")
                     .foregroundColor(.black)
             }
             .frame(width: 300, height: 25)
@@ -267,13 +310,15 @@ struct OtherProfileView: View {
         }
         .onAppear{
             Task{
+                //add param for current user
                 try? await viewModel.loadCurrentUser()
             }
         }
         .toolbar{
             ToolbarItem(placement: .navigationBarTrailing){
                 NavigationLink {
-                    SettingsView(showSignIn: $showSignIn)
+                    SettingsView()
+                    //SettingsView(showSignIn: $showSignIn)
                 } label: {
                     Image(systemName: "gear")
                         .font(.headline)
@@ -289,6 +334,6 @@ struct OtherProfileView: View {
 
 #Preview {
     NavigationStack{
-        OtherProfileView(showSignIn: .constant(false))
+        OtherProfileView(curUser: .constant(""),showSignIn: .constant(false))
     }
 }
