@@ -25,7 +25,7 @@ struct Get_MatchedApp: App {
     var body: some Scene {
         WindowGroup {
             NavigationStack{
-                //AuthenticationView()
+                MatchesListView(showSignIn: .constant(false))
             }
         }
     }

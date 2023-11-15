@@ -17,4 +17,5 @@ struct FirebaseConstants {
     static let profileImageURL = "profileImageURL"
     static let messages = "messages"
     static let users = "users"
+    static let name = "name"
 }

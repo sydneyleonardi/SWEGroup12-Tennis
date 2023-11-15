@@ -25,7 +25,6 @@
 		B713C1DB2ADE19240089F6D3 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B713C1DA2ADE19240089F6D3 /* SettingsView.swift */; };
 		B713C1DD2ADE1A600089F6D3 /* SettingsRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B713C1DC2ADE1A600089F6D3 /* SettingsRowView.swift */; };
 		B713C1DF2AF2D7F80089F6D3 /* OtherProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B713C1DE2AF2D7F80089F6D3 /* OtherProfileView.swift */; };
-		B713C1E12AFC1F2A0089F6D3 /* FilterMenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B713C1E02AFC1F290089F6D3 /* FilterMenuView.swift */; };
 		B713C1E32AFC5E1C0089F6D3 /* FilterOptionsMenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B713C1E22AFC5E1C0089F6D3 /* FilterOptionsMenuView.swift */; };
 		B713C1E52B018A6E0089F6D3 /* ProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B713C1E42B018A6E0089F6D3 /* ProfileViewModel.swift */; };
 		B713C1E82B0191AC0089F6D3 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = B713C1E72B0191AC0089F6D3 /* FirebaseAnalytics */; };
@@ -88,10 +87,10 @@
 		B713C2602B01D4E40089F6D3 /* FirebaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B713C25E2B01D4E40089F6D3 /* FirebaseManager.swift */; };
 		B713C2632B01D60D0089F6D3 /* SDWebImageSwiftUI in Frameworks */ = {isa = PBXBuildFile; productRef = B713C2622B01D60D0089F6D3 /* SDWebImageSwiftUI */; };
 		B713C2652B02C3020089F6D3 /* ChatLogView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B713C2642B02C3010089F6D3 /* ChatLogView.swift */; };
+		B713C2672B02F9070089F6D3 /* FirestoreMocks.swift in Sources */ = {isa = PBXBuildFile; fileRef = B713C2662B02F9070089F6D3 /* FirestoreMocks.swift */; };
 		B74565A12ADC972000700718 /* MatchesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B74565A02ADC972000700718 /* MatchesViewModel.swift */; };
 		B74565A32ADC991200700718 /* MatchesListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B74565A22ADC991200700718 /* MatchesListView.swift */; };
 		B74565A52ADC994B00700718 /* Match.swift in Sources */ = {isa = PBXBuildFile; fileRef = B74565A42ADC994B00700718 /* Match.swift */; };
-		B74F34022AD8512A00751833 /* SelectButtonFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = B74F34012AD8512A00751833 /* SelectButtonFilter.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -134,7 +133,6 @@
 		B713C1DA2ADE19240089F6D3 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		B713C1DC2ADE1A600089F6D3 /* SettingsRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsRowView.swift; sourceTree = "<group>"; };
 		B713C1DE2AF2D7F80089F6D3 /* OtherProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OtherProfileView.swift; sourceTree = "<group>"; };
-		B713C1E02AFC1F290089F6D3 /* FilterMenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterMenuView.swift; sourceTree = "<group>"; };
 		B713C1E22AFC5E1C0089F6D3 /* FilterOptionsMenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterOptionsMenuView.swift; sourceTree = "<group>"; };
 		B713C1E42B018A6E0089F6D3 /* ProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewModel.swift; sourceTree = "<group>"; };
 		B713C21D2B0192790089F6D3 /* EditProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileView.swift; sourceTree = "<group>"; };
@@ -169,10 +167,10 @@
 		B713C25D2B01D4E40089F6D3 /* FirebaseConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FirebaseConstants.swift; sourceTree = "<group>"; };
 		B713C25E2B01D4E40089F6D3 /* FirebaseManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FirebaseManager.swift; sourceTree = "<group>"; };
 		B713C2642B02C3010089F6D3 /* ChatLogView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatLogView.swift; sourceTree = "<group>"; };
+		B713C2662B02F9070089F6D3 /* FirestoreMocks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirestoreMocks.swift; sourceTree = "<group>"; };
 		B74565A02ADC972000700718 /* MatchesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchesViewModel.swift; sourceTree = "<group>"; };
 		B74565A22ADC991200700718 /* MatchesListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchesListView.swift; sourceTree = "<group>"; };
 		B74565A42ADC994B00700718 /* Match.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Match.swift; sourceTree = "<group>"; };
-		B74F34012AD8512A00751833 /* SelectButtonFilter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectButtonFilter.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -278,6 +276,7 @@
 			isa = PBXGroup;
 			children = (
 				0E4FF5F32AC4D821009FC5F6 /* SWEGroup12_TennisTests.swift */,
+				B713C2662B02F9070089F6D3 /* FirestoreMocks.swift */,
 			);
 			path = "SWEGroup12-TennisTests";
 			sourceTree = "<group>";
@@ -381,8 +380,6 @@
 		B74F33FE2AD72F2500751833 /* Matches_Filtering */ = {
 			isa = PBXGroup;
 			children = (
-				B74F34012AD8512A00751833 /* SelectButtonFilter.swift */,
-				B713C1E02AFC1F290089F6D3 /* FilterMenuView.swift */,
 				B74565A02ADC972000700718 /* MatchesViewModel.swift */,
 				B713C1E22AFC5E1C0089F6D3 /* FilterOptionsMenuView.swift */,
 				B74565A22ADC991200700718 /* MatchesListView.swift */,
@@ -572,13 +569,11 @@
 				B713C1D92ADE187C0089F6D3 /* SelectButton.swift in Sources */,
 				B713C22F2B01957D0089F6D3 /* UpdatePasswordView.swift in Sources */,
 				B713C1DF2AF2D7F80089F6D3 /* OtherProfileView.swift in Sources */,
-				B713C1E12AFC1F2A0089F6D3 /* FilterMenuView.swift in Sources */,
 				B74565A12ADC972000700718 /* MatchesViewModel.swift in Sources */,
 				B713C2472B0199D70089F6D3 /* CreateProfileViewModel.swift in Sources */,
 				B713C1D52ADE13E30089F6D3 /* ProfileView.swift in Sources */,
 				B713C2252B01934F0089F6D3 /* EditProfileViewModel.swift in Sources */,
 				B713C25F2B01D4E40089F6D3 /* FirebaseConstants.swift in Sources */,
-				B74F34022AD8512A00751833 /* SelectButtonFilter.swift in Sources */,
 				B713C1E32AFC5E1C0089F6D3 /* FilterOptionsMenuView.swift in Sources */,
 				B713C2352B01966F0089F6D3 /* LogInView.swift in Sources */,
 				B713C1E52B018A6E0089F6D3 /* ProfileViewModel.swift in Sources */,
@@ -615,6 +610,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				0E4FF5F42AC4D821009FC5F6 /* SWEGroup12_TennisTests.swift in Sources */,
+				B713C2672B02F9070089F6D3 /* FirestoreMocks.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -784,7 +780,7 @@
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 13.5;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "SWEGroup12.SWEGroup12-Tennis";
+				PRODUCT_BUNDLE_IDENTIFIER = VandyCourts;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = auto;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
@@ -821,7 +817,7 @@
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 13.5;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "SWEGroup12.SWEGroup12-Tennis";
+				PRODUCT_BUNDLE_IDENTIFIER = VandyCourts;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = auto;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";

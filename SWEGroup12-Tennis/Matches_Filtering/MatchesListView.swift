@@ -62,6 +62,7 @@ struct MatchesListView: View{
                 Button("Show Filters") {
                     self.showFilterOptions.toggle()
                 }
+                .accessibility(identifier: "Show Filters")
                 if showFilterOptions {
                     FilterOptionsMenuView(showFilterOptions: $showFilterOptions, sendFilter: $sendFilter, applyFilters: {
                         print("Updated sendFilter attributes: \(sendFilter.skillLevel)")

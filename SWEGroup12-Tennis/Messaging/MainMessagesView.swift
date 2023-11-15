@@ -13,10 +13,51 @@ import SDWebImageSwiftUI
 class MainMessagesViewModel: ObservableObject{
     
     @Published var errorMessage = ""
-    @Published var chatUser = ChatUser(data: ["id": "", "email": "", "profileImageURL": "", "name": "", "gender": "", "age": "", "skillLevel": "", "type": "","description": "","datesSelected": []])
+    @Published var chatUser: ChatUser?
+//    = ChatUser(data: ["id": "", "email": "", "profileImageURL": "", "name": "", "gender": "", "age": "", "skillLevel": "", "type": "","description": "","datesSelected": []])
     
     init(){
         fetchCurrentUser()
+        
+        fetchRecentMessages()
+    }
+    
+    @Published var recentMessages = [RecentMessage]()
+    
+    
+     func fetchRecentMessages(){
+        guard let uid = Auth.auth().currentUser?.uid else{return}
+         
+         //removes obsilete messages
+         self.recentMessages.removeAll()
+        
+        Firestore.firestore().collection("recent_messages")
+            .document(uid)
+            .collection("messages")
+            .order(by: "timestamp")
+            .addSnapshotListener { querySnapshot, error in
+                if let error = error {
+                    print("Failed to listen for recent messages: \(error)")
+                    return
+                }
+                
+                querySnapshot?.documentChanges.forEach({ change in
+                    
+                    let docId = change.document.documentID
+                    
+                    if let index =
+                        self.recentMessages.firstIndex(where: { rm in
+                        return rm.documentId == docId
+                        }){
+                        self.recentMessages.remove(at:index)
+                    }
+                    
+                    self.recentMessages.insert(.init(documentId: docId, data: change.document.data()), at: 0)
+                        
+//                    self.recentMessages.append(.init(documentId: docId, data: change.document.data()))
+                    
+                })
+            }
     }
     
     private func fetchCurrentUser(){
@@ -71,6 +112,8 @@ struct MainMessagesView: View {
     //creating an instance of the viewmodel
     @ObservedObject private var vm = MainMessagesViewModel()
     
+    private var chatLogViewModel = ChatLogViewModel(chatUser: nil)
+    
     var body: some View {
         NavigationView{
             VStack{
@@ -93,7 +136,7 @@ struct MainMessagesView: View {
         
         HStack(spacing: 16){
             
-            WebImage(url: URL(string: vm.chatUser.profileImageURL ?? "person.fill"))
+            WebImage(url: URL(string: vm.chatUser?.profileImageURL ?? "person.fill"))
                 .resizable()
                 .scaledToFill()
                 .frame(width: 60, height: 60)
@@ -105,50 +148,50 @@ struct MainMessagesView: View {
             //Image(systemName: "person.fill").font(.system(size: 34, weight: .heavy))
             
             VStack(alignment: .leading, spacing: 4){
-                Text(vm.chatUser.name ?? "").font(.system(size: 24, weight: .bold))
+                Text(vm.chatUser?.name ?? "").font(.system(size: 24, weight: .bold))
                 HStack{
                     Circle().foregroundColor(.green).frame(width: 14, height: 14)
                     Text("online").font(.system(size: 14)).foregroundColor(Color(.lightGray))
                 }
             }
             Spacer()
-//            Button {
-//                shouldShowLogOutOptions.toggle()
-//            } label: {
-//                Image(systemName: "gear")
-//                    .font(.system(size: 24, weight: .bold))
-//            }
         }
         .padding()
-//        .actionSheet(isPresented: $shouldShowLogOutOptions) {
-//            .init(title: Text("Settings"), message: Text("What do you want to do?"), buttons: [.default(Text("Default Button")), .cancel()])
-//        }
     }
     
     
     private var messagesView: some View {
         ScrollView{
-            ForEach(0..<10, id: \.self){num in
+            ForEach(vm.recentMessages){recentMessage in
                 VStack{
-                    NavigationLink {
-                        Text("Destination")
+                    Button {
+                        let uid = Auth.auth().currentUser?.uid == recentMessage.fromId ? recentMessage.toId : recentMessage.fromId
+                        self.chatUser = ChatUser(data: ["id": uid, "uid": uid, "email": recentMessage.email, "profileImageURL": recentMessage.profileImageURL, "name": recentMessage.name, "gender": "", "age": "", "skillLevel": "", "type": "","description": "","datesSelected": []])
+                        self.chatLogViewModel.chatUser = self.chatUser
+                        self.chatLogViewModel.fetchMessages()
+                        self.shouldNavigateToChatLogView.toggle()
                     } label: {
                         HStack(spacing: 16){
-                            Image(systemName: "person.fill")
-                                .font(.system(size: 32))
-                                .padding(8)
+                            WebImage(url: URL(string: recentMessage.profileImageURL))
+                                .resizable()
+                                .scaledToFill()
+                                .frame(width: 60, height: 60)
+                                .clipped()
+                                .cornerRadius(64)
                                 .overlay(RoundedRectangle(cornerRadius: 44)
                                     .stroke(Color.black, lineWidth: /*@START_MENU_TOKEN@*/1.0/*@END_MENU_TOKEN@*/))
                             
                             
-                            VStack(alignment: .leading){
-                                Text("Username").font(.system(size: 16, weight: .bold))
-                                Text("Message sent to user").font(.system(size: 14)).foregroundColor(Color(.lightGray))
+                            VStack(alignment: .leading, spacing: 8){
+                                Text(recentMessage.name).font(.system(size: 16, weight: .bold))
+                                    .foregroundColor(Color(.label))
+                                Text(recentMessage.text).font(.system(size: 14)).foregroundColor(Color(.darkGray))
+                                    .multilineTextAlignment(/*@START_MENU_TOKEN@*/.leading/*@END_MENU_TOKEN@*/)
                             }
                             
                             Spacer()
                             
-                            Text("22d").font(.system(size: 14, weight: .semibold))
+                            Text(recentMessage.timeAgo).font(.system(size: 14, weight: .semibold))
                         }
                     }
 
@@ -198,3 +241,4 @@ struct MainMessagesView: View {
 #Preview {
     MainMessagesView()
 }
+

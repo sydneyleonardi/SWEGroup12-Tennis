@@ -1,41 +1,53 @@
-//
-//  SWEGroup12_TennisUITests.swift
-//  SWEGroup12-TennisUITests
-//
-//  Created by Sydney Leonardi on 9/27/23.
-//
-
 import XCTest
 
-final class SWEGroup12_TennisUITests: XCTestCase {
+class MatchesListViewUITests: XCTestCase {
+    
+    var app: XCUIApplication!
 
     override func setUpWithError() throws {
-        // Put setup code here. This method is called before the invocation of each test method in the class.
-
-        // In UI tests it is usually best to stop immediately when a failure occurs.
+        try super.setUpWithError()
         continueAfterFailure = false
-
-        // In UI tests it’s important to set the initial state - such as interface orientation - required for your tests before they run. The setUp method is a good place to do this.
+        app = XCUIApplication()
+        app.launch()
     }
+
+    func testShowFiltersButton() {
+        // Check if the "Show Filters" button exists
+        let showFiltersButton = app.buttons["Show Filters"]
+        XCTAssertTrue(showFiltersButton.exists)
+        
+        // Tap the "Show Filters" button
+        showFiltersButton.tap()
+        
+        // Check if the filter options view is displayed
+        let filterOptionsView = app.otherElements["FilterOptionsMenuView"]
+        XCTAssertTrue(filterOptionsView.exists)
+    }
+
+    func testTapRowInList() {
+        // Assuming there's at least one row in the list
+        let firstRow = app.tables.cells.firstMatch
+        XCTAssertTrue(firstRow.exists)
+        
+        // Tap the first row
+        firstRow.tap()
+        
+        // Check if the destination view is displayed
+        let otherProfileView = app.otherElements["OtherProfileView"]
+        XCTAssertTrue(otherProfileView.exists)
+    }
+    
+        
+        
+        // Check if the filter options view is displayed
+        //let filterOptionsView = app.otherElements["FilterOptionsMenuView"]
+        //XCTAssertTrue(filterOptionsView.exists)
+    
+
+    // Add more test cases as needed
 
     override func tearDownWithError() throws {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
-    }
-
-    func testExample() throws {
-        // UI tests must launch the application that they test.
-        let app = XCUIApplication()
-        app.launch()
-
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
-    }
-
-    func testLaunchPerformance() throws {
-        if #available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 7.0, *) {
-            // This measures how long it takes to launch your application.
-            measure(metrics: [XCTApplicationLaunchMetric()]) {
-                XCUIApplication().launch()
-            }
-        }
+        app = nil
+        try super.tearDownWithError()
     }
 }

@@ -13,10 +13,10 @@ class ChatLogViewModel: ObservableObject{
     
     @Published var chatText = ""
     
-    //array of messages 
+    //array of messages
     @Published var chatMessages = [ChatMessage]()
     
-    let chatUser: ChatUser?
+    @Published var chatUser: ChatUser?
     
     init(chatUser: ChatUser?){
         self.chatUser = chatUser
@@ -25,7 +25,7 @@ class ChatLogViewModel: ObservableObject{
         fetchMessages()
     }
     
-    private func fetchMessages(){
+     func fetchMessages(){
         guard let fromId = Auth.auth().currentUser?.uid else {return}
         
         //recepient
@@ -48,6 +48,12 @@ class ChatLogViewModel: ObservableObject{
                         self.chatMessages.append(.init(documentId: change.document.documentID, data: data))
                     }
                 })
+                
+                //to help with autoscroll to bottom of chat functionality
+                DispatchQueue.main.async {
+                    self.count += 1
+                }
+                
             }
     }
     
@@ -79,6 +85,8 @@ class ChatLogViewModel: ObservableObject{
             self.persistRecentMessage()
             
             self.chatText = ""
+            
+            self.count += 1
         }
         
         //need to save same message on recipient side
@@ -118,7 +126,8 @@ class ChatLogViewModel: ObservableObject{
             FirebaseConstants.fromId: uid,
             FirebaseConstants.toId: toId,
             FirebaseConstants.profileImageURL: chatUser.profileImageURL,
-            FirebaseConstants.email: chatUser.email
+            FirebaseConstants.email: chatUser.email,
+            FirebaseConstants.name: chatUser.name
         ] as [String : Any]
         
         document.setData(data) { error in
@@ -130,7 +139,32 @@ class ChatLogViewModel: ObservableObject{
         
         //NEED TO DO AGAIN FOR RECIPIENT ^
         
+        guard let currentUser = FirebaseManager.shared.currentUser else { return }
+        let recipientRecentMessageDictionary = [
+            FirebaseConstants.timestamp: Timestamp(),
+            FirebaseConstants.text: self.chatText,
+            FirebaseConstants.fromId: uid,
+            FirebaseConstants.toId: toId,
+            FirebaseConstants.profileImageURL: currentUser.profileImageURL,
+            FirebaseConstants.email: currentUser.email,
+            FirebaseConstants.name: currentUser.name
+        ] as [String : Any]
+        
+        Firestore.firestore()
+            .collection("recent_messages")
+            .document(toId)
+            .collection("messages")
+            .document(currentUser.uid)
+            .setData(recipientRecentMessageDictionary) { error in
+                if let error = error {
+                    print("Failed to save recipient recent message: \(error)")
+                    return
+                }
+            }
+        
     }
+    
+    @Published var count = 0
 }
 
 struct ChatLogView: View {
@@ -158,42 +192,26 @@ struct ChatLogView: View {
     
     private var messagesView: some View{
         ScrollView{
-            ForEach(vm.chatMessages){ message in
+            ScrollViewReader { scrollViewProxy in
                 VStack{
-                    //depending on the fromId, message will be green or white
-                    if message.fromId == Auth.auth().currentUser?.uid {
-                        HStack{
-                            Spacer()
-                            HStack{
-                                Text(message.text)
-                                    .foregroundColor(Color.white)
-                            }
-                            .padding()
-                            .background(CustomColor.myColor)
-                            .cornerRadius(8)
-                        }
-                    } else {
-                        HStack{
-                            HStack{
-                                Text(message.text)
-                                    .foregroundColor(Color.black)
-                            }
-                            .padding()
-                            .background(Color.white)
-                            .cornerRadius(8)
-                             
-                            Spacer()
-                        }
+                    ForEach(vm.chatMessages){ message in
+                        MessageView(message: message)
                     }
+                    
+                    HStack{
+                        Spacer()
+                    }
+                    .id("Empty")
                 }
-                .padding(.horizontal)
-                .padding(.top, 8)
+                .onReceive(vm.$count) { _ in
+                    withAnimation(.easeOut(duration: 0.5)) {
+                        scrollViewProxy.scrollTo("Empty", anchor: .bottom)
+                    }
+                    
+                }
                 
             }
             
-            HStack{
-                Spacer()
-            }
         }
         .background(Color(.init(white: 0.95, alpha: 1)))
     }
@@ -224,6 +242,42 @@ struct ChatLogView: View {
         .padding(.horizontal)
         .padding(.vertical, 8)
         
+    }
+}
+
+struct MessageView: View {
+    
+    let message: ChatMessage
+    var body: some View{
+        VStack{
+            //depending on the fromId, message will be green or white
+            if message.fromId == Auth.auth().currentUser?.uid {
+                HStack{
+                    Spacer()
+                    HStack{
+                        Text(message.text)
+                            .foregroundColor(Color.white)
+                    }
+                    .padding()
+                    .background(CustomColor.myColor)
+                    .cornerRadius(8)
+                }
+            } else {
+                HStack{
+                    HStack{
+                        Text(message.text)
+                            .foregroundColor(Color.black)
+                    }
+                    .padding()
+                    .background(Color.white)
+                    .cornerRadius(8)
+                     
+                    Spacer()
+                }
+            }
+        }
+        .padding(.horizontal)
+        .padding(.top, 8)
     }
 }
 

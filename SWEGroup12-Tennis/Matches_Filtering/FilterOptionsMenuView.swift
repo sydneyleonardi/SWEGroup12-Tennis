@@ -15,33 +15,22 @@ struct FilterOptionsMenuView: View {
     @State private var isSelectedSing = false
     @State private var isSelectedDoub = false
     var body: some View {
-        //@State var isSelected200: Bool = false
-        //@State var sendFilter = Match(userID: "", name:"", skillLevel:"", email:"", gender:"", type:"")
-        // Your code for filter options
-        // Apply Filters button or logic
-        //var isSelectedBeg = false
         VStack {
-            //Text("Filter For Match")
-                //.font(.system(size: 15))
-
-            //var isSelected300 = false
-            //.offset(y: -150) // Adjust this offset as necessary
             HStack(spacing: 30){
                 Button(action: {
                     // Comment out or remove the following line
-                    //var isSelected300 = false
+                    // var isSelected300 = false
                     isSelectedBeg.toggle()
                     
                     print("Before setting isSelected200 to true: \(isSelectedBeg)")
-                    //isSelected300 = true
+                    // isSelected300 = true
                     print("After setting isSelected200 to true: \(isSelectedBeg)")
                     
                     if isSelectedBeg {
                         $sendFilter.wrappedValue.skillLevel = "Beginner"
                         print("Updated sendFilter attributes: \(sendFilter.skillLevel)")
                         applyFilters()
-                    }
-                    else{
+                    } else {
                         $sendFilter.wrappedValue.skillLevel = ""
                         print("Updated sendFilter attributes: \(sendFilter.skillLevel)")
                         applyFilters()
@@ -50,13 +39,13 @@ struct FilterOptionsMenuView: View {
                     RoundedRectangle(cornerRadius: 10)
                         .frame(width: 80, height: 25)
                         .foregroundColor(isSelectedBeg ? Color.accentColor : Color(UIColor.lightGray))
-                        //.foregroundColor(!isSelectedBeg ? Color.gray : Color.gray)
-                        //.foregroundColor(isSelectedBeg ? Color.accentColor : Color.accentColor)
                         .overlay(
                             Text("Beginner")
                                 .foregroundColor(.white)
                         )
                 }
+                .accessibility(identifier: "Beginner")
+
                 Button(action: {
                     // Comment out or remove the following line
                     //var isSelected300 = false
@@ -243,7 +232,7 @@ struct FilterOptionsMenuView: View {
             
         }
         .offset()
-        
+        .accessibility(identifier: "FilterOptionsMenuView")
         
         /* Button("Apply Filters") {
          applyFilters() // This will refresh MatchesListView
@@ -257,5 +246,6 @@ struct FilterOptionsMenuView: View {
          .offset(y: -20) // Adjust this offset as necessary
          }*/
     }
+    //.accessibility(identifier: "FilterOptionsMenuView")
 }
 
