@@ -309,7 +309,7 @@ struct ResTimeView: View {
     var body: some View{
         //let currUser = profileVM.user?.name
         
-        NavigationStack {
+        //NavigationStack {
             VStack(alignment: .center, spacing: 0) {
                 
                 Image("Logo")
@@ -371,7 +371,7 @@ struct ResTimeView: View {
 //                print("2: \(currUser)")
 //            }
         }
-    }
+    //}
     
 }
 
@@ -388,7 +388,7 @@ struct ResConfirmationView: View{
     
     var body: some View{
         
-        NavigationStack {
+        //NavigationStack {
             VStack {
                     Image("Logo")
                         .padding()
@@ -426,7 +426,7 @@ struct ResConfirmationView: View{
                 }
             }
         }
-    }
+    //}
 }
 
 struct DeleteResView: View{
@@ -443,7 +443,7 @@ struct DeleteResView: View{
     
     
     var body: some View{
-        NavigationStack {
+        //NavigationStack {
             VStack(alignment: .center, spacing: 0) {
                 
                 Image("Logo")
@@ -492,7 +492,7 @@ struct DeleteResView: View{
                 
             }
         }
-    }
+    //}
 }
 
 struct DeleteResConfirmationView: View{
@@ -504,7 +504,7 @@ struct DeleteResConfirmationView: View{
     
     var body: some View{
  
-        NavigationStack {
+        //NavigationStack {
             VStack {
                     Image("Logo")
                         .padding()
@@ -541,7 +541,7 @@ struct DeleteResConfirmationView: View{
             }
         }
 
-    }
+    //}
 }
 
 

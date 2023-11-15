@@ -19,7 +19,7 @@ struct ContentView: View {
     @State private var userIsSignedIn: Bool = false
     
     var body: some View {
-        NavigationStack{
+        NavigationView{
             VStack{
                 if(userIsSignedIn){
                     HomeView()

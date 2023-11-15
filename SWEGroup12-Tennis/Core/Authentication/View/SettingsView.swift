@@ -97,6 +97,48 @@ struct SettingsView: View {
             .cornerRadius(10)
             .padding(.bottom,10)
             
+            HStack{
+                Text("Information")
+                    .bold()
+                    .font(.subheadline)
+                    .padding(.leading, 50)
+                
+                Spacer()
+            }
+            
+            Link(destination:URL(string: "https://sites.google.com/vanderbilt.edu/vandycourtsprivacypolicy/home")!)
+            {
+                HStack
+                {
+                    Image(systemName: "lock.doc.fill")
+                        .imageScale(.small)
+                        .font(.title)
+                    Text("Privacy Policy")
+                }
+                .padding(.leading, 10)
+                .frame(width:310, height: 50, alignment:.leading)
+                .background(CustomColor.myColor)
+                .cornerRadius(10)
+                .foregroundColor(.black)
+                .padding(.bottom, 10)
+            }
+            
+            Link(destination:URL(string: "https://sites.google.com/vanderbilt.edu/vandycourtshelp/home")!)
+            {
+                HStack
+                {
+                    Image(systemName: "info.circle.fill")
+                        .imageScale(.small)
+                        .font(.title)
+                    Text("Help")
+                }
+                .padding(.leading, 10)
+                .frame(width:310, height: 50, alignment:.leading)
+                .background(CustomColor.myColor)
+                .cornerRadius(10)
+                .foregroundColor(.black)
+            }
+            
             Spacer()
         }
         .onAppear{
