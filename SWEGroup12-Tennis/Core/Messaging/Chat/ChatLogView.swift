@@ -218,9 +218,9 @@ struct ChatLogView: View {
     
     private var chatBottomBar: some View {
         HStack(spacing: 16){
-            Image(systemName: "photo.on.rectangle") //from sfsymbols
-                .font(.system(size: 24))
-                .foregroundColor(Color(.darkGray))
+//            Image(systemName: "photo.on.rectangle") //from sfsymbols
+//                .font(.system(size: 24))
+//                .foregroundColor(Color(.darkGray))
             ZStack {
                 DescriptionPlaceholder()
                 TextEditor(text: $vm.chatText)
