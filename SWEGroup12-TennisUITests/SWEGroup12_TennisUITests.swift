@@ -207,6 +207,168 @@ class LogInViewUITests: XCTestCase {
             let deleteButton = app.buttons["Delete Reservation"]
             XCTAssertTrue(deleteButton.exists)
         }
+        func testAvailableReservations() throws {
+                let availableResButton = app.buttons["Available Reservations"]
+                XCTAssertTrue(availableResButton.exists)
+                availableResButton.tap()
+                
+                // Add assertions to verify the behavior when the Available Reservations button is tapped
+            }
+
+            func testSelectingDifferentCourts() throws {
+                let court2Button = app.buttons["Court 2"]
+                XCTAssertTrue(court2Button.exists)
+                court2Button.tap()
+                
+                // Add assertions to verify the behavior when Court 2 is selected
+
+                let court3Button = app.buttons["Court 3"]
+                XCTAssertTrue(court3Button.exists)
+                court3Button.tap()
+                
+                // Add assertions to verify the behavior when Court 3 is selected
+
+                // Similarly, test for other courts
+            }
+        func testSwitchToCurrentReservations() {
+                let app = XCUIApplication()
+                app.launch()
+                
+                // Assuming there is a way to identify and interact with the buttons
+                let currentReservationsButton = app.buttons["Current Reservations"]
+                XCTAssertTrue(currentReservationsButton.exists)
+                
+                // Tapping on the "Current Reservations" button
+                currentReservationsButton.tap()
+                
+                // Asserting that the availableRes property is set to false
+                let availableResProperty = app.staticTexts["availableResProperty"]
+                XCTAssertEqual(availableResProperty.label, "false")
+                
+                // Asserting that the yourResExist property is set to false
+                let yourResExistProperty = app.staticTexts["yourResExistProperty"]
+                XCTAssertEqual(yourResExistProperty.label, "false")
+                
+                // Add further assertions to check UI changes or any specific behavior expected
+                // For instance, verifying the visibility of elements related to current reservations
+                
+                // Example:
+                let currentReservationsText = app.staticTexts["Current Reservations"]
+                XCTAssertTrue(currentReservationsText.exists)
+            }
+
+            // More tests for various user interactions in the CalendarResView
+
+        func testResTimeView() {
+                let app = XCUIApplication()
+                app.launch()
+                
+                // Assuming there's a button to initiate the reservation confirmation
+                let confirmReservationButton = app.buttons["Confirm Reservation"]
+                XCTAssertTrue(confirmReservationButton.exists)
+                
+                // Tapping on the "Confirm Reservation" button
+                confirmReservationButton.tap()
+                
+                // Add assertions to verify elements or behavior after confirming the reservation
+                
+                // Example:
+                let reservationConfirmationText = app.staticTexts["Reservation Confirmed!"]
+                XCTAssertTrue(reservationConfirmationText.exists)
+                
+                // Add further assertions to check UI changes or any specific behavior expected after confirming the reservation
+                
+                // Example:
+                let confirmationSuccessText = app.staticTexts["Your reservation has been confirmed."]
+                XCTAssertTrue(confirmationSuccessText.exists)
+            }
+            func testResConfirmationView() {
+                let app = XCUIApplication()
+                app.launch()
+                
+                // Assuming the view launches from the previous screen or action
+                // You may need to perform actions to reach the confirmation view
+                
+                // Example: Navigating to the reservation confirmation view
+                let confirmReservationButton = app.buttons["Confirm Reservation"]
+                XCTAssertTrue(confirmReservationButton.exists)
+                confirmReservationButton.tap()
+                
+                // Assuming the confirmation view displays a message confirming the reservation
+                let confirmationText = app.staticTexts["Reservation Confirmed!"]
+                XCTAssertTrue(confirmationText.exists)
+                
+                // Assuming there's a close button to return to the previous screen
+                let closeButton = app.buttons["Close"]
+                XCTAssertTrue(closeButton.exists)
+                
+                // Tapping on the close button to return to the previous screen
+                closeButton.tap()
+                
+                // Add assertions to verify elements or behavior after closing the confirmation view
+                
+                // Example: Verify the navigation back to the previous screen
+                let calendarView = app.otherElements["CalendarResView"]
+                XCTAssertTrue(calendarView.exists)
+            }
+            func testDeleteResView() {
+                let app = XCUIApplication()
+                app.launch()
+                
+                // Assuming the view launches from the previous screen or action
+                // You may need to perform actions to reach the delete reservation view
+                
+                // Example: Navigating to the delete reservation view
+                let deleteReservationButton = app.buttons["Delete Reservation"]
+                XCTAssertTrue(deleteReservationButton.exists)
+                deleteReservationButton.tap()
+                
+                // Assuming the delete reservation view displays a confirmation message
+                let deleteConfirmationText = app.staticTexts["Reservation Deleted"]
+                XCTAssertTrue(deleteConfirmationText.exists)
+                
+                // Assuming there's a close button to return to the previous screen
+                let closeButton = app.buttons["Close"]
+                XCTAssertTrue(closeButton.exists)
+                
+                // Tapping on the close button to return to the previous screen
+                closeButton.tap()
+                
+                // Add assertions to verify elements or behavior after closing the delete reservation view
+                
+                // Example: Verify the navigation back to the previous screen
+                let calendarView = app.otherElements["CalendarResView"]
+                XCTAssertTrue(calendarView.exists)
+            }
+            func testDeleteResConfirmationView() {
+                let app = XCUIApplication()
+                app.launch()
+                
+                // Assuming the view launches from the previous screen or action
+                // You may need to perform actions to reach the delete reservation confirmation view
+                
+                // Example: Navigating to the delete reservation confirmation view
+                let deleteConfirmationButton = app.buttons["Delete Confirmation"]
+                XCTAssertTrue(deleteConfirmationButton.exists)
+                deleteConfirmationButton.tap()
+                
+                // Assuming the delete reservation confirmation view displays a confirmation message
+                let deleteConfirmationText = app.staticTexts["Reservation Deleted"]
+                XCTAssertTrue(deleteConfirmationText.exists)
+                
+                // Assuming there's a close button to dismiss the confirmation view
+                let closeButton = app.buttons["Close"]
+                XCTAssertTrue(closeButton.exists)
+                
+                // Tapping on the close button to dismiss the confirmation view
+                closeButton.tap()
+                
+                // Add assertions to verify elements or behavior after dismissing the confirmation view
+                
+                // Example: Verify the navigation back to the previous screen
+                let calendarView = app.otherElements["CalendarResView"]
+                XCTAssertTrue(calendarView.exists)
+            }
     }
     
     class SignUpViewTests: XCTestCase {
