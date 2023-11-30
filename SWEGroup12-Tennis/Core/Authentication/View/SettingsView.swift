@@ -54,6 +54,7 @@ struct SettingsView: View {
                     do{
                         try viewModel.signOut()
                         showSignIn = true
+                        
                     }catch{
                         print(error)
                     }
@@ -67,6 +68,7 @@ struct SettingsView: View {
             .background(CustomColor.myColor)
             .cornerRadius(10)
             .padding(.bottom,10)
+            .toolbar(.hidden, for: .tabBar)
             
             
             
