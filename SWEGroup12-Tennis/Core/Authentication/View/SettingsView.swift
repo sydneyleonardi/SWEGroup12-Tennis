@@ -68,7 +68,7 @@ struct SettingsView: View {
             .background(CustomColor.myColor)
             .cornerRadius(10)
             .padding(.bottom,10)
-            .toolbar(.hidden, for: .tabBar)
+            //.toolbar(.hidden, for: .tabBar)
             
             
             
@@ -162,6 +162,7 @@ struct SettingsView: View {
         
         // Navigates back to Log In View
         NavigationLink("", destination: LogInView().navigationBarBackButtonHidden(true), isActive: $showSignIn)
+            .toolbar(.hidden, for: .tabBar)
     }
 
 }
