@@ -165,6 +165,7 @@ struct SignUpView: View {
                 }
                 .font(.system(size:14))
                 .padding()
+                .foregroundColor(/*@START_MENU_TOKEN@*/.blue/*@END_MENU_TOKEN@*/)
             }
             
         }
@@ -177,8 +178,8 @@ struct SignUpView: View {
 // Validation for Sign Up
 extension SignUpView: AuthenticationFormProtocol{
     var formIsValid: Bool {
-        return !viewModel.email.isEmpty
-//        && viewModel.email.contains("@vanderbilt.edu")
+        return !viewModel.email.isEmpty        
+        && viewModel.email.contains("@vanderbilt.edu")
         && !viewModel.password.isEmpty
         && viewModel.password.count > 8
         && viewModel.password == viewModel.confirmPassword
