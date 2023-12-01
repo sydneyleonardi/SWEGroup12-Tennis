@@ -38,6 +38,8 @@ struct FilterOptionsMenuView: View {
                     // Comment out or remove the following line
                     //var isSelected300 = false
                     isSelectedBeg.toggle()
+                    isSelectedClu = false
+                    isSelectedColl = false
                     
                     print("Before setting isSelected200 to true: \(isSelectedBeg)")
                     //isSelected300 = true
@@ -68,6 +70,8 @@ struct FilterOptionsMenuView: View {
                     // Comment out or remove the following line
                     //var isSelected300 = false
                     isSelectedClu.toggle()
+                    isSelectedBeg = false
+                    isSelectedColl = false
                     
                     print("Before setting isSelected200 to true: \(isSelectedClu)")
                     //isSelected300 = true
@@ -96,6 +100,8 @@ struct FilterOptionsMenuView: View {
                     // Comment out or remove the following line
                     //var isSelected300 = false
                     isSelectedColl.toggle()
+                    isSelectedClu = false
+                    isSelectedBeg = false
                     
                     print("Before setting isSelected200 to true: \(isSelectedColl)")
                     //isSelected300 = true
@@ -136,6 +142,7 @@ struct FilterOptionsMenuView: View {
                     // Comment out or remove the following line
                     //var isSelected300 = false
                     isSelectedMal.toggle()
+                    isSelectedFem = false
                     
                     print("Before setting isSelected200 to true: \(isSelectedMal)")
                     //isSelected300 = true
@@ -164,6 +171,7 @@ struct FilterOptionsMenuView: View {
                     // Comment out or remove the following line
                     //var isSelected300 = false
                     isSelectedFem.toggle()
+                    isSelectedMal = false
                     
                     print("Before setting isSelected200 to true: \(isSelectedFem)")
                     //isSelected300 = true
@@ -194,6 +202,7 @@ struct FilterOptionsMenuView: View {
                     // Comment out or remove the following line
                     //var isSelected300 = false
                     isSelectedSing.toggle()
+                    isSelectedDoub = false
                     
                     print("Before setting isSelected200 to true: \(isSelectedSing)")
                     //isSelected300 = true
@@ -222,6 +231,7 @@ struct FilterOptionsMenuView: View {
                     // Comment out or remove the following line
                     //var isSelected300 = false
                     isSelectedDoub.toggle()
+                    isSelectedSing = false
                     
                     print("Before setting isSelected200 to true: \(isSelectedDoub)")
                     //isSelected300 = true
