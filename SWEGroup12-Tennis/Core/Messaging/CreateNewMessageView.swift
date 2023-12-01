@@ -32,7 +32,6 @@ class CreateNewMessageViewModel: ObservableObject{
                     self.users.append(.init(data: data))
                 })
                 
-               // self.errorMessage = "Fetched users successfully"
             }
     }
 }

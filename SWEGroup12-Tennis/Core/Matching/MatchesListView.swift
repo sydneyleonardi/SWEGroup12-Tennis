@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import SDWebImageSwiftUI
 
 let sendFilter = Match(userID: "", name:"", skillLevel:"", gender:"", type:"", time:[])
 struct MatchesListView: View{
@@ -20,25 +21,6 @@ struct MatchesListView: View{
     @ObservedObject var profileVM = ProfileViewModel()
     
     var curUser: DBUser?
-    //check two time availibilty arrays for any available overlap
-    /*func arraysHaveCommonTime(currTime: [Int], matchTime: [Int]) -> Bool {
-        for (curr, match) in zip(currTime, matchTime) {
-            if curr == 1 && match == 1 {
-                return true
-            }
-        }
-        return false
-    }
-    //automatically filter matches according to shared time availability
-    //automatically remove the current user from potential matches
-    //manually apply filter preferences from top bar
-    func filterMatches(match: Match, sendFilter: Match, currUser: String, currTime: [Int]) -> Bool {
-        return (sendFilter.gender.isEmpty || match.gender == sendFilter.gender) &&
-               (sendFilter.skillLevel.isEmpty || match.skillLevel == sendFilter.skillLevel) &&
-               (sendFilter.type.isEmpty || match.type == sendFilter.type) &&
-               (currUser != match.name) &&
-               arraysHaveCommonTime(currTime: currTime, matchTime: match.time)
-    }*/
     
     var body: some View{
         let currUser = profileVM.user?.name ?? ""
@@ -59,6 +41,7 @@ struct MatchesListView: View{
                     let currTime = profileVM.user?.datesSelected ?? []
                     if viewModel.filterMatches(match: i, sendFilter: sendFilter, currUser: currUser, currTime: currTime) {
                         NavigationLink(destination: OtherProfileView(curUser: .constant(i.userID) , showSignIn: $showSignIn)) {
+                            
                             HStack() {
                                 VStack(alignment: .leading) {
                                     Text(i.name)
@@ -71,23 +54,6 @@ struct MatchesListView: View{
                                         .font(.subheadline)
                                 }
                                 Spacer()
-                                VStack(alignment: .center) {
-                                    Text("Quick Match")
-                                        .frame(width: 150, height: 40)
-                                        .background(Color.accentColor)
-                                        .cornerRadius(20)
-                                        .foregroundColor(.black)
-                                        .onTapGesture {
-                                            viewModel.alert = true
-                                        }
-                                        .alert(isPresented: $viewModel.alert) {
-                                            Alert(title: Text("Match Request Sent!"),
-                                                  message: Text("Pending Approval"),
-                                                  dismissButton: .default(Text("OK")) {
-                                                viewModel.alert = false
-                                            })
-                                        }
-                                }
                             }
                         }
                     }

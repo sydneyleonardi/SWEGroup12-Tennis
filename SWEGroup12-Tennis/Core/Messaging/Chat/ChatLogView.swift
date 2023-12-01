@@ -218,9 +218,7 @@ struct ChatLogView: View {
     
     private var chatBottomBar: some View {
         HStack(spacing: 16){
-//            Image(systemName: "photo.on.rectangle") //from sfsymbols
-//                .font(.system(size: 24))
-//                .foregroundColor(Color(.darkGray))
+
             ZStack {
                 DescriptionPlaceholder()
                 TextEditor(text: $vm.chatText)
@@ -296,7 +294,6 @@ private struct DescriptionPlaceholder: View {
 
 #Preview {
     NavigationView{
-//        ChatLogView(chatUser: .init(data: ["uid": "IiaTxhiQ7MORPqtX6blzrSApCZm1", "email": "vikash.k.singh@vanderbilt.edu"]))
         MainMessagesView()
     }
 }

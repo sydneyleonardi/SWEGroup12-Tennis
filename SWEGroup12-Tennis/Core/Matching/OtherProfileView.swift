@@ -193,6 +193,7 @@ struct OtherProfileView: View {
     @Binding var curUser: String
     @Binding var showSignIn: Bool
     @ObservedObject private var viewModel: OtherProfileViewModel
+    @State private var chatUser: ChatUser?
     
     init(curUser: Binding<String>, showSignIn: Binding<Bool>) {
         _curUser = curUser
@@ -257,10 +258,11 @@ struct OtherProfileView: View {
                     
                     // Navigates to Edit Profile Page
                     NavigationLink{
+                        ChatLogView(chatUser: chatUser)
                         
                     }label:
                     {
-                        Text("Match")
+                        Text("Message")
                             .foregroundColor(.black)
                     }
                     .frame(width: 300, height: 25)
@@ -422,11 +424,30 @@ struct OtherProfileView: View {
             .ignoresSafeArea(.all, edges:.horizontal)
             Spacer()
         }
-        .onAppear{
-            Task{
-            try? await viewModel.loadCurrentUser()
-            }
-        }
+        .onAppear {
+              Task {
+                 do {
+            // add param for current user
+            try await viewModel.loadCurrentUser()
+            if let user = viewModel.user {
+                chatUser = ChatUser(
+                    data: ["id": user.userId, "uid": user.userId,
+                           "name": user.name,
+                           "gender": "",
+                           "age": "",
+                           "skillLevel": "",
+                           "type": "",
+                           "email": user.email,
+                           "description": "",
+                           "datesSelected": [],
+                           "profileImageURL": user.profileImageURL]
+                                )
+                            }
+                        } catch {
+                            print("Error loading current user: \(error)")
+                        }
+                    }
+                }
     }
 }
 

@@ -14,7 +14,6 @@ class MainMessagesViewModel: ObservableObject{
     
     @Published var errorMessage = ""
     @Published var chatUser: ChatUser?
-//    = ChatUser(data: ["id": "", "email": "", "profileImageURL": "", "name": "", "gender": "", "age": "", "skillLevel": "", "type": "","description": "","datesSelected": []])
     
     init(){
         fetchCurrentUser()
@@ -54,7 +53,6 @@ class MainMessagesViewModel: ObservableObject{
                     
                     self.recentMessages.insert(.init(documentId: docId, data: change.document.data()), at: 0)
                         
-//                    self.recentMessages.append(.init(documentId: docId, data: change.document.data()))
                     
                 })
             }
@@ -118,7 +116,6 @@ struct MainMessagesView: View {
         NavigationView{
             VStack{
                 
-                //Text("CURRENT USER ID: \(vm.errorMessage)")
                 customNavBar
                 messagesView
                 
@@ -145,7 +142,6 @@ struct MainMessagesView: View {
                 .overlay(RoundedRectangle(cornerRadius: 44)
                     .stroke(Color.black, lineWidth: /*@START_MENU_TOKEN@*/1.0/*@END_MENU_TOKEN@*/))
             
-            //Image(systemName: "person.fill").font(.system(size: 34, weight: .heavy))
             
             VStack(alignment: .leading, spacing: 4){
                 Text(vm.chatUser?.name ?? "").font(.system(size: 24, weight: .bold))
