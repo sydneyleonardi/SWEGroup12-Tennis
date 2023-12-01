@@ -71,6 +71,7 @@ struct LogInView: View {
                 }
                 .padding(.vertical, 10)
                 .font(.system(size:14))
+                .foregroundColor(.blue)
                 
                 // Sign In Button
                 Button {
@@ -122,6 +123,7 @@ struct LogInView: View {
                     }
                     .font(.system(size:14))
                     .padding()
+                    .foregroundColor(.blue)
                 }
             }
             
