@@ -1,8 +1,8 @@
-# SWEGroup12-Tennis
+# Vandy Courts
 
 
 **Project Outline:**  
-Our project is a mobile application that is a matching app for tennis players to find partners to play with or opponents to play against. It will allow users to create profiles, search others based on their skill level, their available playing times, and more, and reserve courts once they have found a partner or opponents. Our client, the Vandy Rec Center, will be able to use this app to streamline the reservation system as well as encourage more tennis play. 
+VandyCourts is a fully deployed iOS application that connects tennis-playing individuals on Vanderbilt's campus. It allows users to create profiles, find others based on filtered criteria, message users within the app, and reserve courts once they have found a partner or opponents. Our client, the Vandy Rec Center, will be able to use this app to streamline their reservation system as well as encourage more tennis play. 
 
 **Database:** Firebase   
 **Language:** Swift  
